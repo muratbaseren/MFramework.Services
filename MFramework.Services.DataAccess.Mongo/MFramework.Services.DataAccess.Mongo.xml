@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MFramework.Services.DataAccess.Mongo</name>
+    </assembly>
+    <members>
+        <member name="T:MFramework.Services.DataAccess.Mongo.Context.MongoDBDefaultContext">
+            <summary>
+            Using "MongoDatabaseConnectionString" 's value of name into ConnectionStrings section and using "MongoDatabaseName" 's value of name into AppSettings section in the appsettings.json file.
+            </summary>
+        </member>
+    </members>
+</doc>
