@@ -2,7 +2,7 @@
 
 namespace MFramework.Services.DataAccess.Context
 {
-    public class DefaultDBInitializer : IDBInitializer
+    public partial class DefaultDBInitializer : IDBInitializer
     {
         public IConfiguration Configuration { get; set; }
 
