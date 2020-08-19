@@ -33,5 +33,6 @@ namespace MFramework.Services.Entities.Abstract
         public string Description { get; set; }
         public string Description2 { get; set; }
         public string MyProperty { get; set; }
+        public string MyProperty1 { get; set; }
     }
 }
