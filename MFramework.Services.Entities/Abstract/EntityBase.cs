@@ -28,5 +28,6 @@ namespace MFramework.Services.Entities.Abstract
     public class Testo
     {
         public string Name { get; set; }
+        public string Surname { get; set; }
     }
 }
