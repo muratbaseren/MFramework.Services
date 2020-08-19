@@ -24,4 +24,11 @@ namespace MFramework.Services.Entities.Abstract
                 this.GetType().GetProperty(nameof(Id)).SetValue(this, ObjectId.GenerateNewId());
         }
     }
+
+    public class Testo
+    {
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public int Age { get; set; }
+    }
 }
