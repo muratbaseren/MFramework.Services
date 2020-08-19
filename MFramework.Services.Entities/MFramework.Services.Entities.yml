@@ -1,2 +1,19 @@
-﻿only_commits:
+﻿version: 1.0.{build}
+branches:
+  only:
+  - prod
+only_commits:
   message: /build entities/
+configuration: Release
+before_build:
+- cmd: nuget restore
+build:
+  project: MFramework.Services.Entities\MFramework.Services.Entities.csproj
+  publish_nuget: true
+  include_nuget_references: true
+  verbosity: minimal
+deploy:
+- provider: NuGet
+  skip_symbols: true
+  on:
+    branch: prod
