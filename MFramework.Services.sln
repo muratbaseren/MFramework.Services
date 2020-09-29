@@ -3,22 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFramework.Services.DataAccess.Mongo", "MFramework.Services.DataAccess.Mongo\MFramework.Services.DataAccess.Mongo.csproj", "{1A131912-AA6E-4060-8193-3DBC481F55D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MFramework.Services.DataAccess.Mongo", "MFramework.Services.DataAccess.Mongo\MFramework.Services.DataAccess.Mongo.csproj", "{1A131912-AA6E-4060-8193-3DBC481F55D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFramework.Services.Entities", "MFramework.Services.Entities\MFramework.Services.Entities.csproj", "{A0ACDC54-E792-4497-B3BC-76FA481C97BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MFramework.Services.Entities", "MFramework.Services.Entities\MFramework.Services.Entities.csproj", "{A0ACDC54-E792-4497-B3BC-76FA481C97BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFramework.Services.Common", "MFramework.Services.Common\MFramework.Services.Common.csproj", "{32DCD313-03C7-4EC8-A927-862F7B1368C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MFramework.Services.Common", "MFramework.Services.Common\MFramework.Services.Common.csproj", "{32DCD313-03C7-4EC8-A927-862F7B1368C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFramework.Services.Business.Mongo", "MFramework.Services.Business.Mongo\MFramework.Services.Business.Mongo.csproj", "{909603E3-FBEC-4F9C-81C6-1E91E1D62144}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MFramework.Services.Business.Mongo", "MFramework.Services.Business.Mongo\MFramework.Services.Business.Mongo.csproj", "{909603E3-FBEC-4F9C-81C6-1E91E1D62144}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFramework.Services.Business", "MFramework.Services.Business\MFramework.Services.Business.csproj", "{8FD8F448-CBE8-423A-8F92-8A8B2C3C31FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MFramework.Services.Business", "MFramework.Services.Business\MFramework.Services.Business.csproj", "{8FD8F448-CBE8-423A-8F92-8A8B2C3C31FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFramework.Services.DataAccess", "MFramework.Services.DataAccess\MFramework.Services.DataAccess.csproj", "{184B40F0-2960-4B97-BDC6-E5531E89BC6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MFramework.Services.DataAccess", "MFramework.Services.DataAccess\MFramework.Services.DataAccess.csproj", "{184B40F0-2960-4B97-BDC6-E5531E89BC6F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CAE568EE-9643-43F6-886D-99E6D78F84D8}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFramework.Services.WebCommon", "MFramework.Services.WebCommon\MFramework.Services.WebCommon.csproj", "{ABF8BC3A-2842-4EAB-A0AF-A748D23381C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,10 @@ Global
 		{184B40F0-2960-4B97-BDC6-E5531E89BC6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{184B40F0-2960-4B97-BDC6-E5531E89BC6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{184B40F0-2960-4B97-BDC6-E5531E89BC6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABF8BC3A-2842-4EAB-A0AF-A748D23381C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABF8BC3A-2842-4EAB-A0AF-A748D23381C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABF8BC3A-2842-4EAB-A0AF-A748D23381C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABF8BC3A-2842-4EAB-A0AF-A748D23381C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
