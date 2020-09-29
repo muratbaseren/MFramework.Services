@@ -11,6 +11,7 @@ namespace MFramework.Services.Business.Abstract
         T Get<T>(TKey id);
         IEnumerable<TEntity> List();
         IEnumerable<T> List<T>();
+        void Update<T>(TKey id, T model);
         TEntity Update(TKey id, TEntity model);
         TResult Update<T, TResult>(TKey id, T model);
     }
