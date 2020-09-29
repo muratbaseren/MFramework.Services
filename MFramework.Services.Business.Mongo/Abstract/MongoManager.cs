@@ -69,6 +69,13 @@ namespace MFramework.Services.Business.Mongo.Abstract
 
         public virtual TResult Update<T, TResult>(ObjectId id, T model)
         {
+            Update<T>(id, model);
+
+            return Get<TResult>(id);
+        }
+
+        public void Update<T>(ObjectId id, T model)
+        {
             var entity = repositoryBase.Find(id);
             mapper.Map(model, entity);
 
@@ -85,8 +92,6 @@ namespace MFramework.Services.Business.Mongo.Abstract
             });
 
             repositoryBase.Update(id, Builders<TEntity>.Update.Combine(updateDefinitions));
-
-            return Get<TResult>(id);
         }
     }
 }
