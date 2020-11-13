@@ -35,6 +35,12 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
             collection = context.Database.GetCollection<TEntity>(collectionName);
         }
 
+        public MongoRepository(MongoDBContextBase mongoDbContext, string collectionName)
+        {
+            context = mongoDbContext;
+            collection = context.Database.GetCollection<TEntity>(collectionName);
+        }
+
         public bool Any()
         {
             return collection.CountDocuments(new BsonDocument()) > 0;
