@@ -5,6 +5,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -20,6 +21,7 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
         TEntity Find<TValue>(Expression<Func<TEntity, TValue>> filter, TValue value);
         List<TEntity> FindAll<TValue>(Expression<Func<TEntity, TValue>> filter, TValue value);
         List<TEntity> List();
+        IQueryable<TEntity> Queryable();
     }
 
     public abstract class MongoRepository<TEntity, TKey> : IMongoRepository<TEntity, TKey> where TEntity : EntityBase<TKey>
@@ -78,6 +80,11 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
         public virtual List<TEntity> List()
         {
             return collection.Find(new BsonDocument()).ToList();
+        }
+
+        public virtual IQueryable<TEntity> Queryable()
+        {
+            return collection.AsQueryable<TEntity>();
         }
 
         public virtual long Update(TKey id, UpdateDefinition<TEntity> updateDefinition)

@@ -61,6 +61,11 @@ namespace MFramework.Services.Business.Mongo.Abstract
             return repositoryBase.List().Select(x => mapper.Map<T>(x)).ToList();
         }
 
+        public virtual IQueryable<TEntity> Query()
+        {
+            return repositoryBase.Queryable();
+        }
+
         public virtual TEntity Update(TKey id, TEntity model)
         {
             return Update<TEntity, TEntity>(id, model);

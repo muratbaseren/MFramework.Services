@@ -7,7 +7,7 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/muratbaseren/MFramework.Services</RepositoryUrl>
     <PackageProjectUrl>https://github.com/muratbaseren/MFramework.Services</PackageProjectUrl>
-    <Version>1.1.1</Version>
+    <Version>1.2.0</Version>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
