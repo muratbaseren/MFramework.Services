@@ -5,24 +5,26 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
 namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
 {
-    public interface IMongoRepository<TEntity> where TEntity : EntityBase<ObjectId>
+    public interface IMongoRepository<TEntity, TKey> where TEntity : EntityBase<TKey>
     {
         bool Any();
         TEntity Insert(TEntity entity);
-        long Update(ObjectId id, UpdateDefinition<TEntity> updateDefinition);
-        long Delete(ObjectId id);
-        TEntity Find(ObjectId id);
+        long Update(TKey id, UpdateDefinition<TEntity> updateDefinition);
+        long Delete(TKey id);
+        TEntity Find(TKey id);
         TEntity Find<TValue>(Expression<Func<TEntity, TValue>> filter, TValue value);
         List<TEntity> FindAll<TValue>(Expression<Func<TEntity, TValue>> filter, TValue value);
         List<TEntity> List();
+        IQueryable<TEntity> Queryable();
     }
 
-    public abstract class MongoRepository<TEntity> : IMongoRepository<TEntity> where TEntity : EntityBase<ObjectId>
+    public abstract class MongoRepository<TEntity, TKey> : IMongoRepository<TEntity, TKey> where TEntity : EntityBase<TKey>
     {
         protected readonly MongoDBContextBase context;
         protected readonly IMongoCollection<TEntity> collection;
@@ -35,19 +37,25 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
             collection = context.Database.GetCollection<TEntity>(collectionName);
         }
 
+        public MongoRepository(MongoDBContextBase mongoDbContext, string collectionName)
+        {
+            context = mongoDbContext;
+            collection = context.Database.GetCollection<TEntity>(collectionName);
+        }
+
         public bool Any()
         {
             return collection.CountDocuments(new BsonDocument()) > 0;
         }
 
-        public virtual long Delete(ObjectId id)
+        public virtual long Delete(TKey id)
         {
             var filter = Builders<TEntity>.Filter.Eq(x => x.Id, id);
             var result = collection.DeleteOne(filter);
             return result.DeletedCount;
         }
 
-        public virtual TEntity Find(ObjectId id)
+        public virtual TEntity Find(TKey id)
         {
             var filter = Builders<TEntity>.Filter.Eq(x => x.Id, id);
             return collection.Find(filter).FirstOrDefault();
@@ -74,7 +82,12 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
             return collection.Find(new BsonDocument()).ToList();
         }
 
-        public virtual long Update(ObjectId id, UpdateDefinition<TEntity> updateDefinition)
+        public virtual IQueryable<TEntity> Queryable()
+        {
+            return collection.AsQueryable<TEntity>();
+        }
+
+        public virtual long Update(TKey id, UpdateDefinition<TEntity> updateDefinition)
         {
             var filter = Builders<TEntity>.Filter.Eq(x => x.Id, id);
             var result = collection.UpdateOne(filter, updateDefinition);
@@ -82,17 +95,4 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
             return result.ModifiedCount;
         }
     }
-
-    //public class Apple : EntityBase<ObjectId>
-    //{
-    //    public string Name { get; set; }
-    //}
-
-    //[Collection(name: "Apples")]
-    //public class AlbumRepository : MongoRepository<Apple>
-    //{
-    //    public AlbumRepository(MongoDBContextBase mongoDbContext) : base(mongoDbContext)
-    //    {
-    //    }
-    //}
 }
