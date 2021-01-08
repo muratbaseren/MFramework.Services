@@ -3,6 +3,7 @@ using MFramework.Services.Business.Abstract;
 using MFramework.Services.DataAccess.Mongo.Repository.Abstract;
 using MFramework.Services.Entities.Abstract;
 using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,6 +17,12 @@ namespace MFramework.Services.Business.Mongo.Abstract
         protected readonly TRepository repository;
         protected readonly IMapper mapper;
         private readonly IMongoRepository<TEntity, TKey> repositoryBase;
+
+        public MongoManager(TRepository repository)
+        {
+            this.repository = repository;
+            repositoryBase = this.repository as IMongoRepository<TEntity, TKey>;
+        }
 
         public MongoManager(TRepository repository, IMapper mapper)
         {
@@ -31,6 +38,9 @@ namespace MFramework.Services.Business.Mongo.Abstract
 
         public virtual TResult Create<T, TResult>(T model)
         {
+            if (mapper == null)
+                throw new ArgumentNullException(nameof(mapper), "AutoMapper parameter can not be null to get generic type result. Use non-generic 'Create' method.");
+
             TEntity entity = repositoryBase.Insert(mapper.Map<TEntity>(model));
             return mapper.Map<TResult>(entity);
         }
@@ -48,6 +58,9 @@ namespace MFramework.Services.Business.Mongo.Abstract
 
         public virtual T Get<T>(TKey id)
         {
+            if (mapper == null)
+                throw new ArgumentNullException(nameof(mapper), "AutoMapper parameter can not be null to get generic type result. Use non-generic 'Get' method.");
+
             return mapper.Map<T>(repositoryBase.Find(id));
         }
 
@@ -58,6 +71,9 @@ namespace MFramework.Services.Business.Mongo.Abstract
 
         public virtual IEnumerable<T> List<T>()
         {
+            if (mapper == null)
+                throw new ArgumentNullException(nameof(mapper), "AutoMapper parameter can not be null to get generic type result. Use non-generic 'List' method.");
+
             return repositoryBase.List().Select(x => mapper.Map<T>(x)).ToList();
         }
 
@@ -73,6 +89,9 @@ namespace MFramework.Services.Business.Mongo.Abstract
 
         public virtual TResult Update<T, TResult>(TKey id, T model)
         {
+            if (mapper == null)
+                throw new ArgumentNullException(nameof(mapper), "AutoMapper parameter can not be null to get generic type result. Use non-generic 'Update' method.");
+
             Update<T>(id, model);
 
             return Get<TResult>(id);
@@ -80,6 +99,9 @@ namespace MFramework.Services.Business.Mongo.Abstract
 
         public void Update<T>(TKey id, T model)
         {
+            if (mapper == null)
+                throw new ArgumentNullException(nameof(mapper), "AutoMapper parameter can not be null to get generic type result. Use non-generic 'Update' method.");
+
             var entity = repositoryBase.Find(id);
             mapper.Map(model, entity);
 
