@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MFramework.Services.Business.Mongo.Abstract;
+using MFramework.Services.Business.Mongo.Managers;
 using MFramework.Services.DataAccess.Mongo.Attributes;
 using MFramework.Services.DataAccess.Mongo.Context;
 using MFramework.Services.DataAccess.Mongo.Repository.Abstract;
