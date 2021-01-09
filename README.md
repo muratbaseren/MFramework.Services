@@ -1,5 +1,11 @@
-﻿using AutoMapper;
-using MFramework.Services.Business.Mongo.Managers;
+# MFramework.Services
+Includes all MFramework services infrastructure projects
+
+## How I Do to Use
+
+```csharp
+using AutoMapper;
+using MFramework.Services.Business.Mongo.Abstract;
 using MFramework.Services.DataAccess.Mongo.Attributes;
 using MFramework.Services.DataAccess.Mongo.Context;
 using MFramework.Services.DataAccess.Mongo.Repository.Abstract;
@@ -86,3 +92,8 @@ namespace SampleConsoleApp
         }
     }
 }
+
+```
+
+Sample net core console app
+https://github.com/muratbaseren/MFramework.Services/tree/master/SampleConsoleApp
