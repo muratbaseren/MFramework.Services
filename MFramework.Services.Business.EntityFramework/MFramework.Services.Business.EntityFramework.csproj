@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MFramework.Services.Business\MFramework.Services.Business.csproj" />
+    <ProjectReference Include="..\MFramework.Services.DataAccess\MFramework.Services.DataAccess.csproj" />
+    <ProjectReference Include="..\MFramework.Services.Entities\MFramework.Services.Entities.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -23,7 +23,7 @@ namespace MFramework.Services.DataAccess.Abstract
         void Remove(TKey id);
         Task RemoveAsync(TEntity entity);
         Task RemoveAsync(TKey id);
-        void Update(TEntity entity);
-        Task UpdateAsync(TEntity entity);
+        void Update(TKey id, TEntity entity);
+        Task UpdateAsync(TKey id, TEntity entity);
     }
 }
