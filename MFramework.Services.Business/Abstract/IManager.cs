@@ -8,8 +8,8 @@ namespace MFramework.Services.Business.Abstract
         TEntity Create(TEntity model);
         TResult Create<T, TResult>(T model);
         bool Delete(TKey id);
-        TEntity Get(TKey id);
-        T Get<T>(TKey id);
+        TEntity Find(TKey id);
+        T Find<T>(TKey id);
         IEnumerable<TEntity> List();
         IEnumerable<T> List<T>();
         IQueryable<TEntity> Query();

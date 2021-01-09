@@ -7,7 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace MFramework.Services.DataAccess.EntityFramework
+namespace MFramework.Services.DataAccess.EntityFrameworkCore
 {
     public abstract class EFRepository<TEntity, TKey, TContext> : IRepository<TEntity, TKey>
         where TEntity : EntityBase<TKey>
@@ -90,15 +90,15 @@ namespace MFramework.Services.DataAccess.EntityFramework
             await Task.CompletedTask;
         }
 
-        public virtual void Update(TEntity entity)
+        public virtual void Update(TKey id, TEntity entity)
         {
             AttachIfNot(entity);
             Context.Entry(entity).State = EntityState.Modified;
         }
 
-        public virtual async Task UpdateAsync(TEntity entity)
+        public virtual async Task UpdateAsync(TKey id, TEntity entity)
         {
-            Update(entity);
+            Update(id, entity);
             await Task.CompletedTask;
         }
 

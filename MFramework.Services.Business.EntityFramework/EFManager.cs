@@ -1,34 +1,33 @@
 ﻿using AutoMapper;
 using MFramework.Services.Business.Abstract;
-using MFramework.Services.DataAccess.Mongo.Repository.Abstract;
+using MFramework.Services.DataAccess.Abstract;
 using MFramework.Services.Entities.Abstract;
-using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MFramework.Services.Business.Mongo.Managers
+namespace MFramework.Services.Business.EntityFramework
 {
-    public class MongoManager<TEntity, TKey, TRepository> :
+    public class EFManager<TEntity, TKey, TRepository> :
         IManager<TEntity, TKey>
         where TEntity : EntityBase<TKey>
         where TRepository : class
     {
         protected readonly TRepository repository;
         protected readonly IMapper mapper;
-        private readonly IMongoRepository<TEntity, TKey> repositoryBase;
+        private readonly IRepository<TEntity, TKey> repositoryBase;
 
-        public MongoManager(TRepository repository)
+        public EFManager(TRepository repository)
         {
             this.repository = repository;
-            repositoryBase = this.repository as IMongoRepository<TEntity, TKey>;
+            repositoryBase = this.repository as IRepository<TEntity, TKey>;
         }
 
-        public MongoManager(TRepository repository, IMapper mapper)
+        public EFManager(TRepository repository, IMapper mapper)
         {
             this.repository = repository;
             this.mapper = mapper;
-            repositoryBase = this.repository as IMongoRepository<TEntity, TKey>;
+            repositoryBase = this.repository as IRepository<TEntity, TKey>;
         }
 
         public virtual TEntity Create(TEntity model)
@@ -41,13 +40,13 @@ namespace MFramework.Services.Business.Mongo.Managers
             if (mapper == null)
                 throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'Create' method.");
 
-            TEntity entity = repositoryBase.Insert(mapper.Map<TEntity>(model));
+            TEntity entity = repositoryBase.Add(mapper.Map<TEntity>(model));
             return mapper.Map<TResult>(entity);
         }
 
         public virtual bool Delete(TKey id)
         {
-            repositoryBase.Delete(id);
+            repositoryBase.Remove(id);
             return true;    // TODO :
         }
 
@@ -61,7 +60,7 @@ namespace MFramework.Services.Business.Mongo.Managers
             if (mapper == null)
                 throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'Get' method.");
 
-            return mapper.Map<T>(repositoryBase.Find(id));
+            return mapper.Map<T>(repositoryBase.Get(id));
         }
 
         public virtual IEnumerable<TEntity> List()
@@ -74,7 +73,7 @@ namespace MFramework.Services.Business.Mongo.Managers
             if (mapper == null)
                 throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'List' method.");
 
-            return repositoryBase.List().Select(x => mapper.Map<T>(x)).ToList();
+            return repositoryBase.GetAll().Select(x => mapper.Map<T>(x)).ToList();
         }
 
         public virtual IQueryable<TEntity> Query()
@@ -102,22 +101,10 @@ namespace MFramework.Services.Business.Mongo.Managers
             if (mapper == null)
                 throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'Update' method.");
 
-            var entity = repositoryBase.Find(id);
+            var entity = repositoryBase.Get(id);
             mapper.Map(model, entity);
 
-            List<UpdateDefinition<TEntity>> updateDefinitions = new List<UpdateDefinition<TEntity>>();
-            var props = entity.GetType().GetProperties().ToList();
-
-            props.ForEach(p =>
-            {
-                string propName = p.Name;
-                object propValue = entity.GetType().GetProperty(p.Name).GetValue(entity);
-
-                updateDefinitions.Add(
-                    Builders<TEntity>.Update.Set(propName, propValue));
-            });
-
-            repositoryBase.Update(id, Builders<TEntity>.Update.Combine(updateDefinitions));
+            repositoryBase.Update(id, entity);
         }
     }
 }
