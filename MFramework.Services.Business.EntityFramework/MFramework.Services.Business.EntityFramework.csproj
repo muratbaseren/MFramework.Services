@@ -9,6 +9,7 @@
     <PackageProjectUrl>https://github.com/muratbaseren/MFramework.Services</PackageProjectUrl>
     <RepositoryUrl>https://github.com/muratbaseren/MFramework.Services</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <Version>2.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MFramework.Services.Business\MFramework.Services.Business.csproj" />
+    <ProjectReference Include="..\MFramework.Services.Common\MFramework.Services.Common.csproj" />
     <ProjectReference Include="..\MFramework.Services.DataAccess\MFramework.Services.DataAccess.csproj" />
     <ProjectReference Include="..\MFramework.Services.Entities\MFramework.Services.Entities.csproj" />
   </ItemGroup>

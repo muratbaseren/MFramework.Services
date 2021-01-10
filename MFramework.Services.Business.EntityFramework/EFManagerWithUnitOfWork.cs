@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MFramework.Services.Business.EntityFramework.Abstract;
+using MFramework.Services.Common.Extensions;
 using MFramework.Services.DataAccess.Abstract;
+using MFramework.Services.DataAccess.UnitOfWork;
 using MFramework.Services.Entities.Abstract;
 using System;
 using System.Collections.Generic;
@@ -9,33 +11,28 @@ using System.Threading.Tasks;
 
 namespace MFramework.Services.Business.EntityFramework
 {
-
-    /// <summary>
-    /// This manager without Unit of work pattern so, CUD operations save data to db with auto SaveChanges.
-    /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TRepository"></typeparam>
-    public class EFManager<TEntity, TKey, TRepository> :
+    public class EFManagerWithUnitOfWork<TEntity, TKey, TRepository, TUnitOfWork> :
         IEFManager<TEntity, TKey>
         where TEntity : EntityBase<TKey>
         where TRepository : class
+        where TUnitOfWork : IUnitOfWork
     {
         protected readonly TRepository repository;
         protected readonly IMapper mapper;
+        protected readonly IUnitOfWork unitOfWork;
         private readonly IRepository<TEntity, TKey> repositoryBase;
 
-        public EFManager(TRepository repository)
+        public EFManagerWithUnitOfWork(IUnitOfWork uow)
         {
-            this.repository = repository;
-            repositoryBase = this.repository as IRepository<TEntity, TKey>;
+            unitOfWork = uow;
+            repository = unitOfWork.GetType().GetProperty<TRepository>().GetValue(unitOfWork) as TRepository;
+            repositoryBase = repository as IRepository<TEntity, TKey>;
+            repositoryBase = (IRepository<TEntity, TKey>)repository;
         }
 
-        public EFManager(TRepository repository, IMapper mapper)
+        public EFManagerWithUnitOfWork(IUnitOfWork uow, IMapper mapper) : this(uow)
         {
-            this.repository = repository;
             this.mapper = mapper;
-            repositoryBase = this.repository as IRepository<TEntity, TKey>;
         }
 
         public virtual void Create(TEntity model)
@@ -48,7 +45,7 @@ namespace MFramework.Services.Business.EntityFramework
             if (mapper == null)
                 throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'Create' method.");
 
-            TEntity entity = repositoryBase.Add(mapper.Map<TEntity>(model));
+            repositoryBase.Add(mapper.Map<TEntity>(model));
         }
 
         public virtual void Delete(TKey id)
@@ -89,12 +86,12 @@ namespace MFramework.Services.Business.EntityFramework
 
         public int Save()
         {
-            return repositoryBase.Save();
+            return unitOfWork.Commit();
         }
 
         public Task<int> SaveAsync()
         {
-            return repositoryBase.SaveAsync();
+            return unitOfWork.CommitAsync();
         }
 
         public virtual void Update(TKey id, TEntity model)
@@ -102,15 +99,13 @@ namespace MFramework.Services.Business.EntityFramework
             Update<TEntity>(id, model);
         }
 
-        public virtual void Update<T>(TKey id, T model)
+        public void Update<T>(TKey id, T model)
         {
             if (mapper == null)
                 throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'Update' method.");
 
             var entity = repositoryBase.Get(id);
             mapper.Map(model, entity);
-
-            repositoryBase.Update(id, entity);
         }
     }
 }

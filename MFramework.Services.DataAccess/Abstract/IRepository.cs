@@ -25,5 +25,7 @@ namespace MFramework.Services.DataAccess.Abstract
         Task RemoveAsync(TKey id);
         void Update(TKey id, TEntity entity);
         Task UpdateAsync(TKey id, TEntity entity);
+        int Save();
+        Task<int> SaveAsync();
     }
 }

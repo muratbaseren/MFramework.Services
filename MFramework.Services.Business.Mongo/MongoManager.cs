@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MFramework.Services.Business.Abstract;
+using MFramework.Services.Business.Mongo.Abstract;
 using MFramework.Services.DataAccess.Mongo.Repository.Abstract;
 using MFramework.Services.Entities.Abstract;
 using MongoDB.Driver;
@@ -7,10 +7,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MFramework.Services.Business.Mongo.Managers
+namespace MFramework.Services.Business.Mongo
 {
+
     public class MongoManager<TEntity, TKey, TRepository> :
-        IManager<TEntity, TKey>
+        IMongoManager<TEntity, TKey>
         where TEntity : EntityBase<TKey>
         where TRepository : class
     {
@@ -33,22 +34,21 @@ namespace MFramework.Services.Business.Mongo.Managers
 
         public virtual TEntity Create(TEntity model)
         {
-            return Create<TEntity, TEntity>(model);
+            return Create<TEntity>(model);
         }
 
-        public virtual TResult Create<T, TResult>(T model)
+        public virtual TEntity Create<T>(T model)
         {
             if (mapper == null)
                 throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'Create' method.");
 
             TEntity entity = repositoryBase.Insert(mapper.Map<TEntity>(model));
-            return mapper.Map<TResult>(entity);
+            return entity;
         }
 
-        public virtual bool Delete(TKey id)
+        public virtual long Delete(TKey id)
         {
-            repositoryBase.Delete(id);
-            return true;    // TODO :
+            return repositoryBase.Delete(id);
         }
 
         public virtual TEntity Find(TKey id)
@@ -82,22 +82,12 @@ namespace MFramework.Services.Business.Mongo.Managers
             return repositoryBase.Queryable();
         }
 
-        public virtual TEntity Update(TKey id, TEntity model)
+        public virtual long Update(TKey id, TEntity model)
         {
-            return Update<TEntity, TEntity>(id, model);
+            return Update<TEntity>(id, model);
         }
 
-        public virtual TResult Update<T, TResult>(TKey id, T model)
-        {
-            if (mapper == null)
-                throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'Update' method.");
-
-            Update<T>(id, model);
-
-            return Find<TResult>(id);
-        }
-
-        public void Update<T>(TKey id, T model)
+        public long Update<T>(TKey id, T model)
         {
             if (mapper == null)
                 throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'Update' method.");
@@ -117,7 +107,7 @@ namespace MFramework.Services.Business.Mongo.Managers
                     Builders<TEntity>.Update.Set(propName, propValue));
             });
 
-            repositoryBase.Update(id, Builders<TEntity>.Update.Combine(updateDefinitions));
+            return repositoryBase.Update(id, Builders<TEntity>.Update.Combine(updateDefinitions));
         }
     }
 }

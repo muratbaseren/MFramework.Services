@@ -119,5 +119,15 @@ namespace MFramework.Services.DataAccess.EntityFramework
         {
             return Table.Count(predicate);
         }
+
+        public int Save()
+        {
+            return Context.SaveChanges();
+        }
+
+        public Task<int> SaveAsync()
+        {
+            return Context.SaveChangesAsync();
+        }
     }
 }
