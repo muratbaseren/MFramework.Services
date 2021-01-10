@@ -1,5 +1,4 @@
-﻿using MFramework.Services.DataAccess.Abstract;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace MFramework.Services.DataAccess.DatabaseInitializers
 {
