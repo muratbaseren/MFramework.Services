@@ -38,17 +38,20 @@ namespace MFramework.Services.Business.EntityFramework
             repositoryBase = this.repository as IRepository<TEntity, TKey>;
         }
 
-        public virtual void Create(TEntity model)
+        public virtual TEntity Create(TEntity model)
         {
-            Create<TEntity>(model);
+            return Create<TEntity>(model);
         }
 
-        public virtual void Create<T>(T model)
+        public virtual TEntity Create<T>(T model)
         {
             if (mapper == null)
                 throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'Create' method.");
 
-            TEntity entity = repositoryBase.Add(mapper.Map<TEntity>(model));
+            TEntity entity = mapper.Map<TEntity>(model);
+            repositoryBase.Add(entity);
+
+            return entity;
         }
 
         public virtual void Delete(TKey id)
