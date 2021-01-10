@@ -19,8 +19,8 @@ namespace MFramework.Services.Business.Abstract
 
     public interface IManager<TEntity, TKey>
     {
-        void Create(TEntity model);
-        void Create<T>(T model);
+        TEntity Create(TEntity model);
+        TEntity Create<T>(T model);
         void Delete(TKey id);
         TEntity Find(TKey id);
         T Find<T>(TKey id);
