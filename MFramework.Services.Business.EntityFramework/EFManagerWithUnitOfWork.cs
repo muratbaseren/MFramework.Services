@@ -22,15 +22,14 @@ namespace MFramework.Services.Business.EntityFramework
         protected readonly IUnitOfWork unitOfWork;
         private readonly IRepository<TEntity, TKey> repositoryBase;
 
-        public EFManagerWithUnitOfWork(IUnitOfWork uow)
+        public EFManagerWithUnitOfWork(TUnitOfWork uow)
         {
             unitOfWork = uow;
             repository = unitOfWork.GetType().GetProperty<TRepository>().GetValue(unitOfWork) as TRepository;
             repositoryBase = repository as IRepository<TEntity, TKey>;
-            repositoryBase = (IRepository<TEntity, TKey>)repository;
         }
 
-        public EFManagerWithUnitOfWork(IUnitOfWork uow, IMapper mapper) : this(uow)
+        public EFManagerWithUnitOfWork(TUnitOfWork uow, IMapper mapper) : this(uow)
         {
             this.mapper = mapper;
         }
