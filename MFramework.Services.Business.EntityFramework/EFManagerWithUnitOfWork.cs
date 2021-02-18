@@ -19,7 +19,7 @@ namespace MFramework.Services.Business.EntityFramework
     {
         protected readonly TRepository repository;
         protected readonly IMapper mapper;
-        protected readonly IUnitOfWork unitOfWork;
+        protected readonly TUnitOfWork unitOfWork;
         private readonly IRepository<TEntity, TKey> repositoryBase;
 
         public EFManagerWithUnitOfWork(TUnitOfWork uow)
