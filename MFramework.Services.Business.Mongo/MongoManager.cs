@@ -84,10 +84,28 @@ namespace MFramework.Services.Business.Mongo
 
         public virtual long Update(TKey id, TEntity model)
         {
+            model.Id = id;
             return Update<TEntity>(id, model);
         }
 
-        public long Update<T>(TKey id, T model)
+        public virtual long Update<T>(TKey id, T model)
+        {
+            if (mapper == null)
+                throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'Update' method.");
+
+            var entity = repositoryBase.Find(id);
+            mapper.Map(model, entity);
+
+            return repositoryBase.Update(id, entity);
+        }
+
+        public virtual long UpdateProperties(TKey id, TEntity model)
+        {
+            model.Id = id;
+            return UpdateProperties<TEntity>(id, model);
+        }
+
+        public virtual long UpdateProperties<T>(TKey id, T model)
         {
             if (mapper == null)
                 throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'Update' method.");

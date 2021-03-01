@@ -13,8 +13,10 @@ namespace MFramework.Services.Business.Abstract
         IEnumerable<TEntity> List();
         IEnumerable<T> List<T>();
         IQueryable<TEntity> Query();
-        TUpdate Update<T>(TKey id, T model);
         TUpdate Update(TKey id, TEntity model);
+        TUpdate Update<T>(TKey id, T model);
+        TUpdate UpdateProperties(TKey id, TEntity model);
+        TUpdate UpdateProperties<T>(TKey id, T model);
     }
 
     public interface IManager<TEntity, TKey>
