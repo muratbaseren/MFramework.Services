@@ -16,6 +16,7 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
         bool Any();
         TEntity Insert(TEntity entity);
         long Update(TKey id, UpdateDefinition<TEntity> updateDefinition);
+        long Update(TKey id, TEntity entity);
         long Delete(TKey id);
         TEntity Find(TKey id);
         TEntity Find<TValue>(Expression<Func<TEntity, TValue>> filter, TValue value);
@@ -43,7 +44,7 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
             collection = context.Database.GetCollection<TEntity>(collectionName);
         }
 
-        public bool Any()
+        public virtual bool Any()
         {
             return collection.CountDocuments(new BsonDocument()) > 0;
         }
@@ -61,12 +62,12 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
             return collection.Find(filter).FirstOrDefault();
         }
 
-        public TEntity Find<TValue>(Expression<Func<TEntity, TValue>> filter, TValue value)
+        public virtual TEntity Find<TValue>(Expression<Func<TEntity, TValue>> filter, TValue value)
         {
             return collection.Find(Builders<TEntity>.Filter.Eq(filter, value)).FirstOrDefault();
         }
 
-        public List<TEntity> FindAll<TValue>(Expression<Func<TEntity, TValue>> filter, TValue value)
+        public virtual List<TEntity> FindAll<TValue>(Expression<Func<TEntity, TValue>> filter, TValue value)
         {
             return collection.Find(Builders<TEntity>.Filter.Eq(filter, value)).ToList();
         }
@@ -91,6 +92,14 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
         {
             var filter = Builders<TEntity>.Filter.Eq(x => x.Id, id);
             var result = collection.UpdateOne(filter, updateDefinition);
+
+            return result.ModifiedCount;
+        }
+
+        public virtual long Update(TKey id, TEntity entity)
+        {
+            var filter = Builders<TEntity>.Filter.Eq(x => x.Id, id);
+            var result = collection.ReplaceOne(filter, entity);
 
             return result.ModifiedCount;
         }
