@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MFramework.Services.Business.Mongo;
+using MFramework.Services.Common.Extensions;
 using MFramework.Services.DataAccess.Mongo.Attributes;
 using MFramework.Services.DataAccess.Mongo.Context;
 using MFramework.Services.DataAccess.Mongo.Repository.Abstract;
@@ -52,10 +53,21 @@ namespace SampleConsoleApp
             IMapper mapper = mapperConfiguration.CreateMapper();
 
             AlbumManager albumManager = new AlbumManager(mapper);
+            CreateFakeData(albumManager);
 
+            //QueryTest(albumManager);
+            //UpdateTest(albumManager);
+
+            Console.WriteLine();
+            Console.WriteLine("List retrieve is completed. Please enter to quit!!..");
+            Console.ReadKey();
+        }
+
+        private static void CreateFakeData(AlbumManager albumManager)
+        {
             if (albumManager.Query().Any() == false)
             {
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     albumManager.Create(new Album
                     {
@@ -70,18 +82,41 @@ namespace SampleConsoleApp
                 Console.WriteLine();
                 Console.ReadKey();
             }
+        }
 
-            //var list = albumManager.Query().Where(x => x.IsSales).ToList();
-            //list.ForEach(x => Console.WriteLine(x.ToJson()));
+        private static void QueryTest(AlbumManager albumManager)
+        {
+            var list = albumManager.Query().Where(x => x.IsSales).ToList();
+            list.ForEach(x => Console.WriteLine(x.ToJson()));
 
             //var list = albumManager.Query().Where(x => x.Name.StartsWith("A")).ToList();
             //list.ForEach(x => Console.WriteLine(x.ToJson()));
 
-            var list = albumManager.Query().Where(x => x.Price >= 200 && x.Price <= 300).ToList();
-            list.ForEach(x => Console.WriteLine(x.ToJson()));
+            //var list = albumManager.Query().Where(x => x.Price >= 200 && x.Price <= 300).ToList();
+            //list.ForEach(x => Console.WriteLine(x.ToJson()));
+        }
 
+        private static void UpdateTest(AlbumManager albumManager)
+        {
+            var album = albumManager.Create(new Album { IsSales = false, Name = "testo11", Price = 10, Year = 2021 });
+            Console.WriteLine(album.ToJson());
+            Console.WriteLine("Album created.");
             Console.WriteLine();
-            Console.WriteLine("List retrieve is completed. Please enter to quit!!..");
+            Console.ReadKey();
+
+            album = albumManager.Find(album.Id);
+            album.Name = "testo112";
+            albumManager.Update(album.Id, album);
+            Console.WriteLine(album.ToJson());
+            Console.WriteLine("Album updated 1.");
+            Console.WriteLine();
+            Console.ReadKey();
+
+            album = albumManager.Find(album.Id);
+            albumManager.UpdateProperties(album.Id, new { Name = "testo113" }.ToExpando());
+            Console.WriteLine(album.ToJson());
+            Console.WriteLine("Album updated 2.");
+            Console.WriteLine();
             Console.ReadKey();
         }
     }
