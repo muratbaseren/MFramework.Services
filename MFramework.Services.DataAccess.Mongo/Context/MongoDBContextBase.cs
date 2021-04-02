@@ -9,6 +9,13 @@ namespace MFramework.Services.DataAccess.Mongo.Context
         public IMongoDatabase Database { get; protected set; }
         protected IConfiguration Configuration { get; set; }
 
+        public MongoDBContextBase(IConfiguration configuration, string connectionString)
+        {
+            Configuration = configuration;
+
+            Client = new MongoClient(connectionString);
+        }
+        
         public MongoDBContextBase(IConfiguration configuration, string connectionString, string databaseName)
         {
             Configuration = configuration;
