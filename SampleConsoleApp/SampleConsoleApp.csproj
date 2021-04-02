@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MFramework.Services.Business.Mongo\MFramework.Services.Business.Mongo.csproj" />
     <ProjectReference Include="..\MFramework.Services.Business\MFramework.Services.Business.csproj" />
+    <ProjectReference Include="..\MFramework.Services.Common\MFramework.Services.Common.csproj" />
     <ProjectReference Include="..\MFramework.Services.DataAccess.Mongo\MFramework.Services.DataAccess.Mongo.csproj" />
     <ProjectReference Include="..\MFramework.Services.DataAccess\MFramework.Services.DataAccess.csproj" />
     <ProjectReference Include="..\MFramework.Services.Entities\MFramework.Services.Entities.csproj" />
