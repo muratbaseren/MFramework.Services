@@ -55,11 +55,12 @@ namespace SampleConsoleApp
             AlbumManager albumManager = new AlbumManager(mapper);
             CreateFakeData(albumManager);
 
-            //QueryTest(albumManager);
-            //UpdateTest(albumManager);
+            QueryTest(albumManager);
+            UpdateTest(albumManager);
+            QueryTest(albumManager);
 
             Console.WriteLine();
-            Console.WriteLine("List retrieve is completed. Please enter to quit!!..");
+            Console.WriteLine("Please enter to quit!!..");
             Console.ReadKey();
         }
 
@@ -78,7 +79,7 @@ namespace SampleConsoleApp
                     });
                 }
 
-                Console.WriteLine("Sample data created. Please enter for continue..");
+                Console.WriteLine("Sample data created. Please enter key to continue..");
                 Console.WriteLine();
                 Console.ReadKey();
             }
@@ -86,36 +87,46 @@ namespace SampleConsoleApp
 
         private static void QueryTest(AlbumManager albumManager)
         {
-            var list = albumManager.Query().Where(x => x.IsSales).ToList();
+            var list = albumManager.List().ToList();
             list.ForEach(x => Console.WriteLine(x.ToJson()));
+            
+            //var list = albumManager.Query().Where(x => x.IsSales).ToList();
+            //list.ForEach(x => Console.WriteLine(x.ToJson()));
 
             //var list = albumManager.Query().Where(x => x.Name.StartsWith("A")).ToList();
             //list.ForEach(x => Console.WriteLine(x.ToJson()));
 
             //var list = albumManager.Query().Where(x => x.Price >= 200 && x.Price <= 300).ToList();
             //list.ForEach(x => Console.WriteLine(x.ToJson()));
+
+            Console.WriteLine();
+            Console.WriteLine("All items listed. Please enter key to continue..");
+            Console.ReadKey();
+            Console.WriteLine();
         }
 
         private static void UpdateTest(AlbumManager albumManager)
         {
             var album = albumManager.Create(new Album { IsSales = false, Name = "testo11", Price = 10, Year = 2021 });
             Console.WriteLine(album.ToJson());
-            Console.WriteLine("Album created.");
+            Console.WriteLine("Album created. Please enter key to continue..");
             Console.WriteLine();
             Console.ReadKey();
 
-            album = albumManager.Find(album.Id);
-            album.Name = "testo112";
-            albumManager.Update(album.Id, album);
-            Console.WriteLine(album.ToJson());
-            Console.WriteLine("Album updated 1.");
+            var album2 = albumManager.Find(album.Id);
+            album2.Name = "testo112";
+            albumManager.Update(album2.Id, album2);
+            var album3 = albumManager.Find(album2.Id);
+            Console.WriteLine(album3.ToJson());
+            Console.WriteLine($"Album name updated {album.Name} => {album3.Name} by Update method. Please enter key to continue..");
             Console.WriteLine();
             Console.ReadKey();
 
-            album = albumManager.Find(album.Id);
-            albumManager.UpdateProperties(album.Id, new { Name = "testo113" }.ToExpando());
-            Console.WriteLine(album.ToJson());
-            Console.WriteLine("Album updated 2.");
+            var album4 = albumManager.Find(album.Id);
+            albumManager.UpdateProperties(album4.Id, new { Name = "testo113" }.ToExpando());
+            var album5 = albumManager.Find(album4.Id);
+            Console.WriteLine(album5.ToJson());
+            Console.WriteLine($"Album name updated {album4.Name} => {album5.Name} by UpdateProperties method. Please enter key to continue..");
             Console.WriteLine();
             Console.ReadKey();
         }
