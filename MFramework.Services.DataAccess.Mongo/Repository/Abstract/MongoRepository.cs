@@ -19,8 +19,8 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
         long Update(TKey id, TEntity entity);
         long Delete(TKey id);
         TEntity Find(TKey id);
-        TEntity Find<TValue>(Expression<Func<TEntity, TValue>> filter, TValue value);
-        List<TEntity> FindAll<TValue>(Expression<Func<TEntity, TValue>> filter, TValue value);
+        TEntity Find(Expression<Func<TEntity, bool>> filter);
+        List<TEntity> FindAll(Expression<Func<TEntity, bool>> filter);
         List<TEntity> List();
         IQueryable<TEntity> Queryable();
     }
@@ -51,25 +51,22 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
 
         public virtual long Delete(TKey id)
         {
-            var filter = Builders<TEntity>.Filter.Eq(x => x.Id, id);
-            var result = collection.DeleteOne(filter);
-            return result.DeletedCount;
+            return collection.DeleteOne(x => x.Id.Equals(id)).DeletedCount;
         }
 
         public virtual TEntity Find(TKey id)
         {
-            var filter = Builders<TEntity>.Filter.Eq(x => x.Id, id);
+            return Queryable().FirstOrDefault(x => x.Id.Equals(id));
+        }
+
+        public virtual TEntity Find(Expression<Func<TEntity, bool>> filter)
+        {
             return collection.Find(filter).FirstOrDefault();
         }
 
-        public virtual TEntity Find<TValue>(Expression<Func<TEntity, TValue>> filter, TValue value)
+        public virtual List<TEntity> FindAll(Expression<Func<TEntity, bool>> filter)
         {
-            return collection.Find(Builders<TEntity>.Filter.Eq(filter, value)).FirstOrDefault();
-        }
-
-        public virtual List<TEntity> FindAll<TValue>(Expression<Func<TEntity, TValue>> filter, TValue value)
-        {
-            return collection.Find(Builders<TEntity>.Filter.Eq(filter, value)).ToList();
+            return collection.Find(filter).ToList();
         }
 
         public virtual TEntity Insert(TEntity entity)
@@ -80,28 +77,22 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
 
         public virtual List<TEntity> List()
         {
-            return collection.Find(new BsonDocument()).ToList();
+            return Queryable().ToList();
         }
 
         public virtual IQueryable<TEntity> Queryable()
         {
-            return collection.AsQueryable<TEntity>();
+            return collection.AsQueryable();
         }
 
         public virtual long Update(TKey id, UpdateDefinition<TEntity> updateDefinition)
         {
-            var filter = Builders<TEntity>.Filter.Eq(x => x.Id, id);
-            var result = collection.UpdateOne(filter, updateDefinition);
-
-            return result.ModifiedCount;
+            return collection.UpdateOne(x => x.Id.Equals(id), updateDefinition).ModifiedCount;
         }
 
         public virtual long Update(TKey id, TEntity entity)
         {
-            var filter = Builders<TEntity>.Filter.Eq(x => x.Id, id);
-            var result = collection.ReplaceOne(filter, entity);
-
-            return result.ModifiedCount;
+            return collection.ReplaceOne(x => x.Id.Equals(id), entity).ModifiedCount;
         }
     }
 }
