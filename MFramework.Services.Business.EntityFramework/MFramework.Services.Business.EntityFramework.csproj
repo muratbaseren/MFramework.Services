@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Authors>K. Murat Başeren</Authors>
+    <Authors>muratbaseren</Authors>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/muratbaseren/MFramework.Services</PackageProjectUrl>
     <RepositoryUrl>https://github.com/muratbaseren/MFramework.Services</RepositoryUrl>

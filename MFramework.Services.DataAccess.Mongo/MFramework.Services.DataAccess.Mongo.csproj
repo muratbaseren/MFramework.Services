@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>K. Murat Başeren</Authors>
+    <Authors>muratbaseren</Authors>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/muratbaseren/MFramework.Services</RepositoryUrl>
     <PackageProjectUrl>https://github.com/muratbaseren/MFramework.Services</PackageProjectUrl>
