@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30320.27
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MFramework.Services.DataAccess.Mongo", "MFramework.Services.DataAccess.Mongo\MFramework.Services.DataAccess.Mongo.csproj", "{1A131912-AA6E-4060-8193-3DBC481F55D0}"
 EndProject
@@ -26,11 +26,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{9912
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleConsoleApp", "SampleConsoleApp\SampleConsoleApp.csproj", "{65708DB7-6C6D-4BF2-9519-E3D3D698C15E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFramework.Services.DataAccess.EntityFrameworkCore", "MFramework.Services.DataAccess.EntityFrameworkCore\MFramework.Services.DataAccess.EntityFrameworkCore.csproj", "{CC40D73A-1558-4ABC-B060-24F0289B74D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MFramework.Services.DataAccess.EntityFrameworkCore", "MFramework.Services.DataAccess.EntityFrameworkCore\MFramework.Services.DataAccess.EntityFrameworkCore.csproj", "{CC40D73A-1558-4ABC-B060-24F0289B74D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFramework.Services.DataAccess.EntityFramework", "MFramework.Services.DataAccess.EntityFramework\MFramework.Services.DataAccess.EntityFramework.csproj", "{21A2BD2F-A5FE-4118-9ED9-C8C5930A6805}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MFramework.Services.DataAccess.EntityFramework", "MFramework.Services.DataAccess.EntityFramework\MFramework.Services.DataAccess.EntityFramework.csproj", "{21A2BD2F-A5FE-4118-9ED9-C8C5930A6805}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFramework.Services.Business.EntityFramework", "MFramework.Services.Business.EntityFramework\MFramework.Services.Business.EntityFramework.csproj", "{FEA6A00C-FAE1-4E31-9A3B-7CCE7DB2C734}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MFramework.Services.Business.EntityFramework", "MFramework.Services.Business.EntityFramework\MFramework.Services.Business.EntityFramework.csproj", "{FEA6A00C-FAE1-4E31-9A3B-7CCE7DB2C734}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FC12AEC1-06FF-451C-B7B0-E836E92620F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
