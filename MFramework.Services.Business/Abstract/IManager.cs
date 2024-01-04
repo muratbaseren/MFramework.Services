@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace MFramework.Services.Business.Abstract
 {
@@ -10,6 +12,8 @@ namespace MFramework.Services.Business.Abstract
         TDelete Delete(TKey id);
         TEntity Find(TKey id);
         T Find<T>(TKey id);
+        //T Find<T>(Expression<Func<TEntity>> filter);
+        //IEnumerable<T> FindAll<T>(Expression<Func<TEntity>> filter);
         IEnumerable<TEntity> List();
         IEnumerable<T> List<T>();
         IQueryable<TEntity> Query();
@@ -28,6 +32,8 @@ namespace MFramework.Services.Business.Abstract
         T Find<T>(TKey id);
         IEnumerable<TEntity> List();
         IEnumerable<T> List<T>();
+        //T Find<T>(Expression<Func<TEntity>> filter);
+        //IEnumerable<T> FindAll<T>(Expression<Func<TEntity>> filter);
         IQueryable<TEntity> Query();
         void Update<T>(TKey id, T model);
         void Update(TKey id, TEntity model);

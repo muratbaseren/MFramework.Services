@@ -1,32 +1,32 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>muratbaseren</Authors>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/muratbaseren/MFramework.Services</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/muratbaseren/MFramework.Services</PackageProjectUrl>
-    <Version>2.3.2</Version>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Authors>muratbaseren</Authors>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/muratbaseren/MFramework.Services</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/muratbaseren/MFramework.Services</PackageProjectUrl>
+		<Version>2.3.2</Version>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\repos\muratbaseren\MFramework.Services\MFramework.Services.DataAccess.Mongo\MFramework.Services.DataAccess.Mongo.xml</DocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>C:\repos\muratbaseren\MFramework.Services\MFramework.Services.DataAccess.Mongo\MFramework.Services.DataAccess.Mongo.xml</DocumentationFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.7" />
-    <PackageReference Include="MongoDB.Driver" Version="2.23.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.7" />
+		<PackageReference Include="MongoDB.Driver" Version="2.23.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\MFramework.Services.Entities\MFramework.Services.Entities.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\MFramework.Services.Entities\MFramework.Services.Entities.csproj" />
+	</ItemGroup>
 
 </Project>
