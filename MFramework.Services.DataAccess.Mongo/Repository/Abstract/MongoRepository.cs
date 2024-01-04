@@ -21,8 +21,6 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
         TEntity Find(TKey id);
         TEntity Find(Expression<Func<TEntity, bool>> filter);
         List<TEntity> FindAll(Expression<Func<TEntity, bool>> filter);
-        //TEntity Find<TValue>(Expression<Func<TEntity, TValue>> filter, TValue value);
-        //List<TEntity> FindAll<TValue>(Expression<Func<TEntity, TValue>> filter, TValue value);
         List<TEntity> List();
         IQueryable<TEntity> Queryable();
     }
@@ -63,13 +61,11 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
 
         public virtual TEntity Find(Expression<Func<TEntity, bool>> filter)
         {
-            //return collection.Find(Builders<TEntity>.Filter.Eq(filter, value)).FirstOrDefault();
             return collection.Find(filter).FirstOrDefault();
         }
 
         public virtual List<TEntity> FindAll(Expression<Func<TEntity, bool>> filter)
         {
-            //return collection.Find(Builders<TEntity>.Filter.Eq(filter, value)).ToList();
             return collection.Find(filter).ToList();
         }
 
