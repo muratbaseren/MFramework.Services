@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.Options;
+using System.ComponentModel.Design;
 using System.Net;
 using System.Net.Mail;
 
 namespace MFramework.Services.Common
 {
 
-    public class EMailSender : IEMailSender
+    public partial class EMailSender : IEMailSender
     {
         private readonly EMailSenderSettings MailSettings;
 
@@ -14,7 +15,7 @@ namespace MFramework.Services.Common
             MailSettings = options?.Value;
         }
 
-        public void SendMail(string[] tos, string body, string subject, Attachment[] attachments = null)
+        public virtual void SendMail(string[] tos, string body, string subject, Attachment[] attachments = null)
         {
             SmtpClient client = new SmtpClient(MailSettings.MailHost)
             {

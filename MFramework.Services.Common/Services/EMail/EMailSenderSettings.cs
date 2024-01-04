@@ -1,6 +1,6 @@
 ﻿namespace MFramework.Services.Common
 {
-    public class EMailSenderSettings
+    public partial class EMailSenderSettings
     {
         public int MailPort { get; set; }
         public string MailHost { get; set; }

@@ -14,10 +14,10 @@ namespace MFramework.Services.DataAccess.Abstract
         int Count(Func<TEntity, bool> predicate);
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
         Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
-        TEntity Get(TKey id);
-        IEnumerable<TEntity> GetAll();
-        Task<IEnumerable<TEntity>> GetAllAsync();
-        Task<TEntity> GetAsync(TKey id);
+        TEntity Find(TKey id);
+        IEnumerable<TEntity> FindAll();
+        Task<IEnumerable<TEntity>> FindAllAsync();
+        Task<TEntity> FindAsync(TKey id);
         IQueryable<TEntity> Queryable();
         void Remove(TEntity entity);
         void Remove(TKey id);

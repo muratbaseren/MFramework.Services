@@ -23,22 +23,22 @@ namespace MFramework.Services.DataAccess.EntityFramework
             Table = Context.Set<TEntity>();
         }
 
-        public virtual TEntity Get(TKey id)
+        public virtual TEntity Find(TKey id)
         {
             return Table.Find(id);
         }
 
-        public virtual async Task<TEntity> GetAsync(TKey id)
+        public virtual async Task<TEntity> FindAsync(TKey id)
         {
             return await Table.FindAsync(id);
         }
 
-        public virtual IEnumerable<TEntity> GetAll()
+        public virtual IEnumerable<TEntity> FindAll()
         {
             return Table.ToList();
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
+        public virtual async Task<IEnumerable<TEntity>> FindAllAsync()
         {
             return await Table.ToListAsync();
         }
@@ -65,7 +65,7 @@ namespace MFramework.Services.DataAccess.EntityFramework
 
         public virtual void Remove(TKey id)
         {
-            var entity = Get(id);
+            var entity = Find(id);
             if (entity == null) return;
 
             Remove(entity);
@@ -79,7 +79,7 @@ namespace MFramework.Services.DataAccess.EntityFramework
 
         public virtual async Task RemoveAsync(TKey id)
         {
-            var entity = Get(id);
+            var entity = Find(id);
             Remove(id);
             await Task.CompletedTask;
         }
@@ -120,14 +120,14 @@ namespace MFramework.Services.DataAccess.EntityFramework
             return Table.Count(predicate);
         }
 
-        public int Save()
+        public virtual int Save()
         {
             return Context.SaveChanges();
         }
 
-        public Task<int> SaveAsync()
+        public virtual async Task<int> SaveAsync()
         {
-            return Context.SaveChangesAsync();
+            return await Context.SaveChangesAsync();
         }
     }
 }
