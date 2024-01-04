@@ -62,10 +62,14 @@ namespace SampleConsoleApp
         }
     }
 
+}
 
+namespace SampleConsoleApp
+{
 
     class Program
     {
+        private static ObjectId newAddedObjId = ObjectId.Empty;
         static void Main(string[] args)
         {
             MapperConfiguration mapperConfiguration =
@@ -92,43 +96,29 @@ namespace SampleConsoleApp
             Console.ReadKey();
         }
 
-        private static ObjectId newAddedObjId = ObjectId.Empty;
+
 
         private static void CreateTest(AlbumManager albumManager)
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("CREATE TEST");
-            Console.WriteLine("===========");
-            Console.WriteLine();
-            Console.ResetColor();
+            WriteTitle("CREATE TEST");
 
             var album = albumManager.Create(new Album { IsSales = false, Name = "testo11", Price = 10, Year = 2021 });
             newAddedObjId = album.Id;
             Console.WriteLine(album.ToJson());
 
-            Console.WriteLine();
-            Console.WriteLine("Album created. ");
-            Console.WriteLine("Please enter key to continue..");
-            Console.ReadKey();
-            Console.WriteLine();
+            LastStatement("Album created. ");
         }
 
         private static void CreateFakeData(AlbumManager albumManager)
         {
-            Console.WriteLine("Checking fake data exists...");
+            "Checking fake data exists...".ToConsoleWithNewLine();
             if (albumManager.Query().Any())
             {
-                Console.WriteLine("Fake data has already exist..");
-                Console.WriteLine();
+                "Fake data has already exist..".ToConsoleWithNewLine();
             }
             else
             {
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("ADDING FAKE DATA");
-                Console.WriteLine("================");
-                Console.WriteLine();
-                Console.ResetColor();
+                WriteTitle("ADDING FAKE DATA");
 
                 // Create fake static datas..
                 //
@@ -139,7 +129,7 @@ namespace SampleConsoleApp
                     IsSales = true,
                     Price = 2991.897623784793302m
                 };
-                Console.WriteLine(albumManager.Create(album1).ToJson());
+                albumManager.Create(album1).ToJson().ToConsoleLine();
 
                 Album album2 = new Album
                 {
@@ -148,7 +138,7 @@ namespace SampleConsoleApp
                     IsSales = true,
                     Price = 80.5049157852795798m
                 };
-                Console.WriteLine(albumManager.Create(album2).ToJson());
+                albumManager.Create(album2).ToJson().ToConsoleLine();
 
                 Album album3 = new Album
                 {
@@ -157,7 +147,7 @@ namespace SampleConsoleApp
                     IsSales = false,
                     Price = 50.2335336088358382m
                 };
-                Console.WriteLine(albumManager.Create(album3).ToJson());
+                albumManager.Create(album3).ToJson().ToConsoleLine();
 
                 Album album4 = new Album
                 {
@@ -166,7 +156,7 @@ namespace SampleConsoleApp
                     IsSales = true,
                     Price = 316.240591920093264m
                 };
-                Console.WriteLine(albumManager.Create(album4).ToJson());
+                albumManager.Create(album4).ToJson().ToConsoleLine();
 
                 Album album5 = new Album
                 {
@@ -175,7 +165,7 @@ namespace SampleConsoleApp
                     IsSales = false,
                     Price = 790.903162565502480m
                 };
-                Console.WriteLine(albumManager.Create(album5).ToJson());
+                albumManager.Create(album5).ToJson().ToConsoleLine();
 
 
 
@@ -183,133 +173,137 @@ namespace SampleConsoleApp
                 //
                 //for (int i = 0; i < 5; i++)
                 //{
-                //    Console.WriteLine(albumManager.Create(new Album
+                //    albumManager.Create(new Album
                 //    {
                 //        Name = NameData.GetCompanyName(),
                 //        Price = (decimal)NumberData.GetDouble() * NumberData.GetNumber(100, 4000),
                 //        IsSales = BooleanData.GetBoolean(),
                 //        Year = NumberData.GetNumber(1980, DateTime.Now.Year)
-                //    }).ToJson());
+                //    }).ToJson().ToConsoleLine();
                 //}
 
-                Console.WriteLine();
-                Console.WriteLine("Fake data created. ");
-                Console.WriteLine("Please enter key to continue..");
-                Console.ReadKey();
-                Console.WriteLine();
+                LastStatement("Fake data created. ");
             }
         }
 
         private static void QueryTest(AlbumManager albumManager)
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("LIST TEST");
-            Console.WriteLine("=========");
-            Console.WriteLine();
-            Console.ResetColor();
+            WriteTitle("LIST TEST");
 
-            Console.WriteLine("List 1 All Items");
-            Console.WriteLine("================");
+            WriteSubTitle("List 1 All Items");
             var list = albumManager.List().ToList();
-            list.ForEach(x => Console.WriteLine(x.ToJson()));
+            list.ForEach(x => x.ToJson().ToConsoleLine());
             Console.WriteLine();
 
-            Console.WriteLine("List 2 (only IsSale=true)");
-            Console.WriteLine("=========================");
+            WriteSubTitle("List 2 (only IsSale=true)");
             var list2 = albumManager.Query().Where(x => x.IsSales).ToList();
-            list2.ForEach(x => Console.WriteLine(x.ToJson()));
+            list2.ForEach(x => x.ToJson().ToConsoleLine());
             Console.WriteLine();
 
-            Console.WriteLine("List 3 (only Name.StartsWith('T'))");
-            Console.WriteLine("==================================");
+            WriteSubTitle("List 3 (only Name.StartsWith('T'))");
             var list3 = albumManager.Query().Where(x => x.Name.StartsWith("T")).ToList();
-            list3.ForEach(x => Console.WriteLine(x.ToJson()));
+            list3.ForEach(x => x.ToJson().ToConsoleLine());
             Console.WriteLine();
 
-            Console.WriteLine("List 4 (only Price >= 50 && x.Price <= 100)");
-            Console.WriteLine("===========================================");
+            WriteSubTitle("List 4 (only Price >= 50 && x.Price <= 100)");
             var list4 = albumManager.Query().Where(x => x.Price >= 50 && x.Price <= 100).ToList();
-            list4.ForEach(x => Console.WriteLine(x.ToJson()));
+            list4.ForEach(x => x.ToJson().ToConsoleLine());
             Console.WriteLine();
 
-            Console.WriteLine();
-            Console.WriteLine("Please enter key to continue..");
-            Console.ReadKey();
-            Console.WriteLine();
+            LastStatement(null);
         }
 
         private static void FindTest(AlbumManager albumManager)
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("FIND TEST");
-            Console.WriteLine("=========");
-            Console.WriteLine();
-            Console.ResetColor();
+            WriteTitle("FIND TEST");
 
-            Console.WriteLine($"Find (only id:{newAddedObjId})");
-            Console.WriteLine("=======================================");
+            WriteSubTitle($"Find (only id:{newAddedObjId})");
             var item1 = albumManager.Find(newAddedObjId);
-            Console.WriteLine(item1.ToJson());
-            Console.WriteLine();
+            item1.ToJson().ToConsoleWithNewLine();
 
-            Console.WriteLine($"Find (Price = 10)");
-            Console.WriteLine("=======================================");
+            WriteSubTitle($"Find (Price = 10)");
             var item2 = albumManager.Find(x => x.Price == 10);
-            Console.WriteLine(item2.ToJson());
-            Console.WriteLine();
+            item2.ToJson().ToConsoleWithNewLine();
 
-            Console.WriteLine($"Find All (Year > 1980 && Year < 1984)");
-            Console.WriteLine("=======================================");
+            WriteSubTitle($"Find All (Year > 1980 && Year < 1984)");
             var list = albumManager.FindAll(x => x.Year > 1980 && x.Year < 1984).ToList();
-            list.ForEach(x => Console.WriteLine(x.ToJson()));
+            list.ForEach(x => x.ToJson().ToConsoleLine());
             Console.WriteLine();
 
-            Console.WriteLine();
-            Console.WriteLine("Please enter key to continue..");
-            Console.ReadKey();
-            Console.WriteLine();
+            LastStatement(null);
         }
 
         private static void UpdateTest(AlbumManager albumManager)
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("UPDATE TESTS");
-            Console.WriteLine("============");
-            Console.WriteLine();
-            Console.ResetColor();
+            WriteTitle("UPDATE TESTS");
 
             var album2 = albumManager.Find(newAddedObjId);
             album2.Name = "testo112";
             albumManager.Update(album2.Id, album2);
             var album3 = albumManager.Find(album2.Id);
-            Console.WriteLine(album3.ToJson());
-            Console.WriteLine($"Album name updated with \"Update\" method. Please enter key to continue..");
-            Console.WriteLine();
+            album3.ToJson().ToConsoleLine();
+            $"Album name updated with \"Update\" method. Please enter key to continue..".ToConsoleWithNewLine();
 
             var album4 = albumManager.Find(newAddedObjId);
             albumManager.UpdateProperties(album4.Id, new { Name = "testo113" }.ToExpando());
             var album5 = albumManager.Find(album4.Id);
-            Console.WriteLine(album5.ToJson());
-            Console.WriteLine($"Album name updated by \"UpdateProperties\" method. ");
+            album5.ToJson().ToConsoleLine();
+            $"Album name updated by \"UpdateProperties\" method. ".ToConsoleWithNewLine();
 
+            LastStatement(null);
+        }
+
+        private static void DeleteTest(AlbumManager albumManager)
+        {
+            WriteTitle("DELETE TEST");
+
+            albumManager.Delete(newAddedObjId);
+
+            LastStatement($"Album deleted.(id : {newAddedObjId})");
+        }
+
+
+
+        private static void LastStatement(string message)
+        {
             Console.WriteLine();
+            if (!string.IsNullOrEmpty(message))
+            {
+                Console.WriteLine(message);
+            }
             Console.WriteLine("Please enter key to continue..");
             Console.ReadKey();
             Console.WriteLine();
         }
 
-        private static void DeleteTest(AlbumManager albumManager)
+        private static void WriteTitle(string title)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("DELETE TEST");
-            Console.WriteLine("===========");
+            Console.WriteLine(title);
+            Console.WriteLine("=".PadRight(title.Length, '='));
             Console.WriteLine();
             Console.ResetColor();
+        }
 
-            albumManager.Delete(newAddedObjId);
-            Console.WriteLine($"Album deleted.(id : {newAddedObjId})");
-            Console.WriteLine("Please enter key to continue..");
-            Console.ReadKey();
+        private static void WriteSubTitle(string subtitle)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(subtitle);
+            Console.WriteLine("=".PadRight(subtitle.Length, '='));
+            Console.ResetColor();
+        }
+    }
+
+    public static class StringExtensions
+    {
+        public static void ToConsoleLine(this string str)
+        {
+            Console.WriteLine(str);
+        }
+
+        public static void ToConsoleWithNewLine(this string str)
+        {
+            Console.WriteLine(str);
             Console.WriteLine();
         }
     }
