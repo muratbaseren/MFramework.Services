@@ -20,7 +20,6 @@ namespace TestProject1.MongoTests
         public async Task HasDocument_ChecksTrue()
         {
             var result1 = _fixture._albumManager.HasDocument();
-
             Assert.True(result1);
         }
 
@@ -28,7 +27,6 @@ namespace TestProject1.MongoTests
         public async Task HasDocumentAsync_ChecksTrue()
         {
             var result1 = await _fixture._albumManager.HasDocumentAsync();
-
             Assert.True(result1);
         }
 
@@ -38,7 +36,7 @@ namespace TestProject1.MongoTests
             var result1 = _fixture._albumManager.List();
 
             Assert.NotNull(result1);
-            Assert.IsAssignableFrom<IEnumerable<Album>>(result1);
+            Assert.IsAssignableFrom<IList<Album>>(result1);
         }
 
         [Fact]
@@ -47,7 +45,7 @@ namespace TestProject1.MongoTests
             var result1 = await _fixture._albumManager.ListAsync();
 
             Assert.NotNull(result1);
-            Assert.IsAssignableFrom<IEnumerable<Album>>(result1);
+            Assert.IsAssignableFrom<IList<Album>>(result1);
         }
 
         [Fact]
@@ -56,7 +54,7 @@ namespace TestProject1.MongoTests
             var result1 = _fixture._albumManager.List<AlbumQuery>();
 
             Assert.NotNull(result1);
-            Assert.IsAssignableFrom<IEnumerable<AlbumQuery>>(result1);
+            Assert.IsAssignableFrom<IList<AlbumQuery>>(result1);
         }
 
         [Fact]
@@ -65,7 +63,7 @@ namespace TestProject1.MongoTests
             var result1 = await _fixture._albumManager.ListAsync<AlbumQuery>();
 
             Assert.NotNull(result1);
-            Assert.IsAssignableFrom<IEnumerable<AlbumQuery>>(result1);
+            Assert.IsAssignableFrom<IList<AlbumQuery>>(result1);
         }
 
         [Fact]
