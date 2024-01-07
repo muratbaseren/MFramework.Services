@@ -13,6 +13,8 @@
 	  <PackageReference Include="AutoMapper" Version="12.0.1" />
 	  <PackageReference Include="EntityFramework" Version="6.4.4" />
 	  <PackageReference Include="mframework.services.fakedata" Version="1.0.23" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.14" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.14" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.23.1" />
     <PackageReference Include="xunit" Version="2.4.2" />
@@ -31,6 +33,7 @@
     <ProjectReference Include="..\MFramework.Services.Business.Mongo\MFramework.Services.Business.Mongo.csproj" />
     <ProjectReference Include="..\MFramework.Services.Business\MFramework.Services.Business.csproj" />
     <ProjectReference Include="..\MFramework.Services.Common\MFramework.Services.Common.csproj" />
+    <ProjectReference Include="..\MFramework.Services.DataAccess.EntityFrameworkCore\MFramework.Services.DataAccess.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\MFramework.Services.DataAccess.EntityFramework\MFramework.Services.DataAccess.EntityFramework.csproj" />
     <ProjectReference Include="..\MFramework.Services.DataAccess.Mongo\MFramework.Services.DataAccess.Mongo.csproj" />
     <ProjectReference Include="..\MFramework.Services.DataAccess\MFramework.Services.DataAccess.csproj" />
