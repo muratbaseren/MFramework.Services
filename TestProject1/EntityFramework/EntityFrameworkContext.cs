@@ -10,5 +10,21 @@ namespace TestProject1.EntityFramework
         }
 
         public DbSet<Song> Songs { get; set; }
+
+        public override int SaveChanges()
+        {
+            lock (this)
+            {
+                return base.SaveChanges();
+            }
+        }
+
+        public override Task<int> SaveChangesAsync()
+        {
+            lock(this)
+            {
+                return base.SaveChangesAsync();
+            }
+        }
     }
 }
