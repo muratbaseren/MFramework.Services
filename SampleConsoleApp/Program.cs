@@ -78,6 +78,7 @@ namespace SampleConsoleApp
             IMapper mapper = mapperConfiguration.CreateMapper();
 
             AlbumManager albumManager = new AlbumManager(mapper);
+            
             CreateFakeData(albumManager);
             QueryTest(albumManager);
 

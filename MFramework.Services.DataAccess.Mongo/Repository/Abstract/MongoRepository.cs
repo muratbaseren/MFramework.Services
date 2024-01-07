@@ -17,6 +17,8 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
     {
         bool Any();
         Task<bool> AnyAsync();
+        long Count();
+        Task<long> CountAsync();
         long Delete(TKey id);
         Task<long> DeleteAsync(TKey id);
         TEntity Find(Expression<Func<TEntity, bool>> filter);
@@ -63,6 +65,16 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
         public virtual async Task<bool> AnyAsync()
         {
             return await collection.CountDocumentsAsync(new BsonDocument()) > 0;
+        }
+
+        public long Count()
+        {
+            return collection.CountDocuments(new BsonDocument());
+        }
+
+        public async Task<long> CountAsync()
+        {
+            return await collection.CountDocumentsAsync(new BsonDocument());
         }
 
         public virtual long Delete(TKey id)
