@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using TestProject1.MongoTests.MongoObjects;
 
 namespace TestProject1.MongoTests
 {

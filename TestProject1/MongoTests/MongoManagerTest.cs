@@ -1,5 +1,4 @@
 ﻿using MongoDB.Bson;
-using TestProject1.MongoTests.MongoObjects;
 using Xunit.Abstractions;
 
 namespace TestProject1.MongoTests

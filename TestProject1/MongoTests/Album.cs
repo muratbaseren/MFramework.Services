@@ -2,7 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace TestProject1.MongoTests.MongoObjects
+namespace TestProject1.MongoTests
 {
     public class Album : EntityBase<ObjectId>
     {

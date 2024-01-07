@@ -1,6 +1,5 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
-using TestProject1.MongoTests.MongoObjects;
 using Xunit.Abstractions;
 
 namespace TestProject1.MongoTests
