@@ -159,17 +159,17 @@ namespace MFramework.Services.Business.Mongo
             return await repositoryBase.FindAllAsync(filter);
         }
 
-        public virtual IEnumerable<TEntity> List()
+        public virtual IList<TEntity> List()
         {
             return repositoryBase.List();
         }
 
-        public virtual async Task<IEnumerable<TEntity>> ListAsync()
+        public virtual async Task<IList<TEntity>> ListAsync()
         {
             return await repositoryBase.ListAsync();
         }
 
-        public virtual IEnumerable<T> List<T>()
+        public virtual IList<T> List<T>()
         {
             if (mapper == null)
                 throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'List' method.");
@@ -177,7 +177,7 @@ namespace MFramework.Services.Business.Mongo
             return mapper.Map<List<T>>(List());
         }
 
-        public virtual async Task<IEnumerable<T>> ListAsync<T>()
+        public virtual async Task<IList<T>> ListAsync<T>()
         {
             if (mapper == null)
                 throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'List' method.");
