@@ -23,44 +23,14 @@ namespace MFramework.Services.DataAccess.EntityFrameworkCore
             Table = Context.Set<TEntity>();
         }
 
-        public virtual bool Any()
+        public virtual TEntity Add(TEntity entity)
         {
-            return Table.Any();
+            return Table.Add(entity).Entity;
         }
 
-        public virtual async Task<bool> AnyAsync()
+        public virtual async Task<TEntity> AddAsync(TEntity entity)
         {
-            return await Table.AnyAsync();
-        }
-
-        public virtual bool Any(Expression<Func<TEntity, bool>> predicate)
-        {
-            return Table.Any(predicate);
-        }
-
-        public virtual async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            return await Table.AnyAsync(predicate);
-        }
-
-        public virtual int Count()
-        {
-            return Table.Count();
-        }
-
-        public virtual async Task<int> CountAsync()
-        {
-            return await Table.CountAsync();
-        }
-
-        public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            return await Table.CountAsync(predicate);
-        }
-
-        public virtual int Count(Expression<Func<TEntity, bool>> predicate)
-        {
-            return Table.Count(predicate);
+            return await Task.FromResult(Add(entity));
         }
 
         public virtual TEntity Find(TKey id)
@@ -73,42 +43,40 @@ namespace MFramework.Services.DataAccess.EntityFrameworkCore
             return await Table.FindAsync(id);
         }
 
-        public virtual IEnumerable<TEntity> FindAll()
+        public virtual TEntity Find(params object[] ids)
         {
-            return Table.ToList();
+            return Table.Find(ids);
         }
 
-        public virtual async Task<IEnumerable<TEntity>> FindAllAsync()
+        public virtual async Task<TEntity> FindAsync(params object[] ids)
+        {
+            return await Table.FindAsync(ids);
+        }
+
+        public virtual async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await Table.FirstOrDefaultAsync(predicate);
+        }
+
+        public virtual async Task<IList<TEntity>> ListAsync()
         {
             return await Table.ToListAsync();
         }
 
-        public virtual IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
-        {
-            return Table.Where(predicate).ToList();
-        }
-
-        public virtual async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            return await Table.Where(predicate).ToListAsync();
-        }
-
-        public virtual TEntity Add(TEntity entity)
-        {
-            return Table.Add(entity).Entity;
-        }
-
-        public virtual async Task<TEntity> AddAsync(TEntity entity)
-        {
-            return await Task.FromResult(Add(entity));
-        }
-
         public virtual void Remove(TKey id)
         {
-            var entity = Find(id);
+            var entity = Table.Find(id);
             if (entity == null) return;
 
-            Remove(entity);
+            Table.Remove(entity);
+        }
+
+        public virtual async Task RemoveAsync(TKey id)
+        {
+            var entity = await Table.FindAsync(id);
+            if (entity == null) return;
+
+            await Task.Run(() => Table.Remove(entity));
         }
 
         public virtual void Remove(TEntity entity)
@@ -117,17 +85,9 @@ namespace MFramework.Services.DataAccess.EntityFrameworkCore
             Table.Remove(entity);
         }
 
-        public virtual async Task RemoveAsync(TKey id)
-        {
-            var entity = Find(id);
-            Remove(id);
-            await Task.CompletedTask;
-        }
-
         public virtual async Task RemoveAsync(TEntity entity)
         {
-            Remove(entity);
-            await Task.CompletedTask;
+            await Task.Run(() => Remove(entity));
         }
 
         public virtual void Update(TKey id, TEntity entity)
@@ -138,8 +98,7 @@ namespace MFramework.Services.DataAccess.EntityFrameworkCore
 
         public virtual async Task UpdateAsync(TKey id, TEntity entity)
         {
-            Update(id, entity);
-            await Task.CompletedTask;
+            await Task.Run(() => Update(id, entity));
         }
 
         protected virtual void AttachIfNot(TEntity entity)
@@ -153,11 +112,6 @@ namespace MFramework.Services.DataAccess.EntityFrameworkCore
         public virtual IQueryable<TEntity> Queryable()
         {
             return Table.AsQueryable();
-        }
-
-        public virtual int Count(Func<TEntity, bool> predicate)
-        {
-            return Table.Count(predicate);
         }
 
         public virtual int Save()

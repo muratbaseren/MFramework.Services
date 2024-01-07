@@ -9,22 +9,14 @@ namespace MFramework.Services.DataAccess.Abstract
 {
     public interface IRepository<TEntity, TKey> where TEntity : EntityBase<TKey>
     {
-        bool Any();
-        Task<bool> AnyAsync();
-        bool Any(Expression<Func<TEntity, bool>> predicate);
-        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
         TEntity Add(TEntity entity);
         Task<TEntity> AddAsync(TEntity entity);
-        int Count();
-        Task<int> CountAsync();
-        int Count(Expression<Func<TEntity, bool>> predicate);
-        Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate);
-        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
-        Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
         TEntity Find(TKey id);
         Task<TEntity> FindAsync(TKey id);
-        IEnumerable<TEntity> FindAll();
-        Task<IEnumerable<TEntity>> FindAllAsync();
+        TEntity Find(params object[] ids);
+        Task<TEntity> FindAsync(params object[] ids);
+        Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<IList<TEntity>> ListAsync();
         IQueryable<TEntity> Queryable();
         void Remove(TKey id);
         Task RemoveAsync(TKey id);

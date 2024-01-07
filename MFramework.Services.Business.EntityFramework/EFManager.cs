@@ -103,69 +103,71 @@ namespace MFramework.Services.Business.EntityFramework
             return mapper.Map<T>(await FindAsync(id));
         }
 
-        public virtual TEntity Find(Expression<Func<TEntity, bool>> filter)
+        public virtual TEntity Find(Expression<Func<TEntity, bool>> predicate)
         {
-            return repositoryBase.Find(filter).FirstOrDefault();
+
+            return repositoryBase.Queryable().FirstOrDefault(predicate);
         }
 
-        public virtual async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> filter)
+        public virtual async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return (await repositoryBase.FindAsync(filter)).FirstOrDefault();
+            return (await repositoryBase.FirstOrDefaultAsync(predicate));
         }
 
-        public virtual T Find<T>(Expression<Func<TEntity, bool>> filter)
-        {
-            if (mapper == null)
-                throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'Get' method.");
-
-            return mapper.Map<T>(Find(filter));
-        }
-
-        public virtual async Task<T> FindAsync<T>(Expression<Func<TEntity, bool>> filter)
+        public virtual T Find<T>(Expression<Func<TEntity, bool>> predicate)
         {
             if (mapper == null)
                 throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'Get' method.");
 
-            return mapper.Map<T>(await FindAsync(filter));
+            return mapper.Map<T>(Find(predicate));
         }
 
-        public virtual IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> filter)
-        {
-            return repositoryBase.Find(filter);
-        }
-
-        public virtual async Task<IEnumerable<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> filter)
-        {
-            return await repositoryBase.FindAsync(filter);
-        }
-
-        public virtual IEnumerable<T> FindAll<T>(Expression<Func<TEntity, bool>> filter)
+        public virtual async Task<T> FindAsync<T>(Expression<Func<TEntity, bool>> predicate)
         {
             if (mapper == null)
                 throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'Get' method.");
 
-            return mapper.Map<List<T>>(FindAll(filter));
+            return mapper.Map<T>(await FindAsync(predicate));
         }
 
-        public virtual async Task<IEnumerable<T>> FindAllAsync<T>(Expression<Func<TEntity, bool>> filter)
+        public virtual IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> predicate)
+        {
+            return repositoryBase.Queryable().Where(predicate);
+        }
+
+        public virtual async Task<IEnumerable<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await Task.FromResult(FindAll(predicate));
+        }
+
+        public virtual IEnumerable<T> FindAll<T>(Expression<Func<TEntity, bool>> predicate)
         {
             if (mapper == null)
                 throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'Get' method.");
 
-            return mapper.Map<List<T>>(await FindAllAsync(filter));
+            return mapper.Map<List<T>>(FindAll(predicate));
         }
 
-        public virtual IEnumerable<TEntity> List()
+        public virtual async Task<IEnumerable<T>> FindAllAsync<T>(Expression<Func<TEntity, bool>> predicate)
         {
-            return repositoryBase.FindAll();
+            if (mapper == null)
+                throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'Get' method.");
+
+            IEnumerable<TEntity> items = await FindAllAsync(predicate);
+            return await Task.FromResult(mapper.Map<List<T>>(items));
         }
 
-        public virtual async Task<IEnumerable<TEntity>> ListAsync()
+        public virtual IList<TEntity> List()
         {
-            return await repositoryBase.FindAllAsync();
+            return repositoryBase.Queryable().ToList();
         }
 
-        public virtual IEnumerable<T> List<T>()
+        public virtual async Task<IList<TEntity>> ListAsync()
+        {
+            return await repositoryBase.ListAsync();
+        }
+
+        public virtual IList<T> List<T>()
         {
             if (mapper == null)
                 throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'List' method.");
@@ -173,12 +175,13 @@ namespace MFramework.Services.Business.EntityFramework
             return mapper.Map<List<T>>(List());
         }
 
-        public virtual async Task<IEnumerable<T>> ListAsync<T>()
+        public virtual async Task<IList<T>> ListAsync<T>()
         {
             if (mapper == null)
                 throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'List' method.");
 
-            return mapper.Map<List<T>>(await ListAsync());
+            IList<TEntity> items = await ListAsync();
+            return await Task.FromResult(mapper.Map<List<T>>(items));
         }
 
         public virtual IQueryable<TEntity> Query()
@@ -222,8 +225,8 @@ namespace MFramework.Services.Business.EntityFramework
             if (mapper == null)
                 throw new NullReferenceException("AutoMapper parameter can not be null to get generic type result. Use non-generic 'Update' method.");
 
-            var entity = Find(id);
-            mapper.Map(model, entity);
+            var entity = await FindAsync(id);
+            await Task.Run(() => mapper.Map(model, entity));
 
             await UpdateAsync(id, entity);
         }
