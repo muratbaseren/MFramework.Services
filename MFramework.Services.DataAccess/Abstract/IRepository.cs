@@ -9,20 +9,27 @@ namespace MFramework.Services.DataAccess.Abstract
 {
     public interface IRepository<TEntity, TKey> where TEntity : EntityBase<TKey>
     {
+        bool Any();
+        Task<bool> AnyAsync();
+        bool Any(Expression<Func<TEntity, bool>> predicate);
+        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
         TEntity Add(TEntity entity);
         Task<TEntity> AddAsync(TEntity entity);
-        int Count(Func<TEntity, bool> predicate);
+        int Count();
+        Task<int> CountAsync();
+        int Count(Expression<Func<TEntity, bool>> predicate);
+        Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate);
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
         Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
-        TEntity Get(TKey id);
-        IEnumerable<TEntity> GetAll();
-        Task<IEnumerable<TEntity>> GetAllAsync();
-        Task<TEntity> GetAsync(TKey id);
+        TEntity Find(TKey id);
+        Task<TEntity> FindAsync(TKey id);
+        IEnumerable<TEntity> FindAll();
+        Task<IEnumerable<TEntity>> FindAllAsync();
         IQueryable<TEntity> Queryable();
-        void Remove(TEntity entity);
         void Remove(TKey id);
-        Task RemoveAsync(TEntity entity);
         Task RemoveAsync(TKey id);
+        void Remove(TEntity entity);
+        Task RemoveAsync(TEntity entity);
         void Update(TKey id, TEntity entity);
         Task UpdateAsync(TKey id, TEntity entity);
         int Save();

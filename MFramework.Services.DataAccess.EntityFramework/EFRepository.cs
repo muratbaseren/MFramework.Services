@@ -16,29 +16,68 @@ namespace MFramework.Services.DataAccess.EntityFramework
         protected readonly TContext Context;
         protected readonly DbSet<TEntity> Table;
 
-
         public EFRepository(TContext context)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
             Table = Context.Set<TEntity>();
         }
 
-        public virtual TEntity Get(TKey id)
+        public virtual bool Any()
+        {
+            return Table.Any();
+        }
+
+        public virtual async Task<bool> AnyAsync()
+        {
+            return await Table.AnyAsync();
+        }
+
+        public virtual bool Any(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Table.Any(predicate);
+        }
+
+        public virtual async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await Table.AnyAsync(predicate);
+        }
+
+        public virtual int Count()
+        {
+            return Table.Count();
+        }
+
+        public virtual async Task<int> CountAsync()
+        {
+            return await Table.CountAsync();
+        }
+
+        public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await Table.CountAsync(predicate);
+        }
+
+        public virtual int Count(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Table.Count(predicate);
+        }
+
+        public virtual TEntity Find(TKey id)
         {
             return Table.Find(id);
         }
 
-        public virtual async Task<TEntity> GetAsync(TKey id)
+        public virtual async Task<TEntity> FindAsync(TKey id)
         {
             return await Table.FindAsync(id);
         }
 
-        public virtual IEnumerable<TEntity> GetAll()
+        public virtual IEnumerable<TEntity> FindAll()
         {
             return Table.ToList();
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
+        public virtual async Task<IEnumerable<TEntity>> FindAllAsync()
         {
             return await Table.ToListAsync();
         }
@@ -65,7 +104,7 @@ namespace MFramework.Services.DataAccess.EntityFramework
 
         public virtual void Remove(TKey id)
         {
-            var entity = Get(id);
+            var entity = Find(id);
             if (entity == null) return;
 
             Remove(entity);
@@ -79,7 +118,7 @@ namespace MFramework.Services.DataAccess.EntityFramework
 
         public virtual async Task RemoveAsync(TKey id)
         {
-            var entity = Get(id);
+            var entity = Find(id);
             Remove(id);
             await Task.CompletedTask;
         }
@@ -115,19 +154,14 @@ namespace MFramework.Services.DataAccess.EntityFramework
             return Table.AsQueryable();
         }
 
-        public virtual int Count(Func<TEntity, bool> predicate)
-        {
-            return Table.Count(predicate);
-        }
-
-        public int Save()
+        public virtual int Save()
         {
             return Context.SaveChanges();
         }
 
-        public Task<int> SaveAsync()
+        public virtual async Task<int> SaveAsync()
         {
-            return Context.SaveChangesAsync();
+            return await Context.SaveChangesAsync();
         }
     }
 }
