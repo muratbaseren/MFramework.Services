@@ -1,4 +1,5 @@
 ﻿using MFramework.Services.DataAccess.Abstract;
+using MFramework.Services.DataAccess.UnitOfWork;
 using MFramework.Services.Entities.Abstract;
 using System;
 using System.Collections.Generic;

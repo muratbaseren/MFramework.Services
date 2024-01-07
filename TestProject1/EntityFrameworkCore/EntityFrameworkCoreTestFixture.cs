@@ -1,37 +1,39 @@
 ﻿using AutoMapper;
 
-namespace TestProject1.MongoTests
+namespace TestProject1.EntityFrameworkCore
 {
-    public class MongoTestFixture : IDisposable
+    public class EntityFrameworkCoreTestFixture : IDisposable
     {
         public IMapper _mapper;
-        public AlbumManager _albumManager;
+        public BookRepository _bookRepository;
+        public BookManager _bookManager;
+        public EntityFrameworkCoreContext _context;
 
-        public MongoTestFixture()
+        public EntityFrameworkCoreTestFixture()
         {
             MapperConfiguration mapperConfiguration =
                 new MapperConfiguration(opts =>
                 {
-                    opts.CreateMap<Album, AlbumCreate>().ReverseMap();
-                    opts.CreateMap<Album, AlbumEdit>().ReverseMap();
-                    opts.CreateMap<Album, AlbumQuery>()
-                        .ForMember(x => x.Id,
-                            opt => opt.MapFrom((x, y) => x.Id.ToString()));
+                    opts.CreateMap<Book, BookCreate>().ReverseMap();
+                    opts.CreateMap<Book, BookEdit>().ReverseMap();
+                    opts.CreateMap<Book, BookQuery>().ReverseMap();
                 });
 
             _mapper = mapperConfiguration.CreateMapper();
-            _albumManager = new AlbumManager(_mapper);
+            _context = new EntityFrameworkCoreContext();
+            _bookRepository = new BookRepository(_context);
+            _bookManager = new BookManager(_bookRepository, _mapper);
 
             SetupEnvironment();
         }
 
         public void SetupEnvironment()
         {
-            if (!_albumManager.Query().Any())
+            if (!_bookManager.Query().Any())
             {
                 List<dynamic> datas = new List<dynamic>
                 {
-                    new { Name="Thompson LLP", Year=1983, IsSales = true, Price = 2991.89m },
+                    new { Name = "Thompson LLP", Year = 1983, IsSales = true, Price = 2991.89m },
                     new { Name = "Lord and Partners", Year = 2008, IsSales = true, Price = 80.50m },
                     new { Name = "Summers CIC", Year = 1981, IsSales = false, Price = 50.23m },
                     new { Name = "Weaver Group", Year = 2013, IsSales = true, Price = 316.24m },
@@ -40,7 +42,7 @@ namespace TestProject1.MongoTests
 
                 foreach (dynamic item in datas)
                 {
-                    _albumManager.Create(new Album
+                    _bookRepository.Add(new Book
                     {
                         Name = item.Name,
                         Year = item.Year,
@@ -48,6 +50,8 @@ namespace TestProject1.MongoTests
                         Price = item.Price
                     });
                 }
+
+                _bookRepository.Save();
             }
         }
 
@@ -58,10 +62,11 @@ namespace TestProject1.MongoTests
 
         private void CleanupEnvironment()
         {
-            _albumManager.albumRepository.database.Client.DropDatabase("mframeworktestdb");
+            _context.Database.EnsureDeleted();
 
             _mapper = null;
-            _albumManager = null;
+            _bookRepository = null;
+            _bookManager = null;
         }
     }
 }

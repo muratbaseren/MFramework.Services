@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using TestProject1.MongoTests.MongoObjects;
 
 namespace TestProject1.EntityFramework
 {
@@ -23,7 +22,7 @@ namespace TestProject1.EntityFramework
             _mapper = mapperConfiguration.CreateMapper();
             _context = new EntityFrameworkContext();
             _songRepository = new SongRepository(_context);
-            _songManager = new SongManager(_songRepository);
+            _songManager = new SongManager(_songRepository, _mapper);
 
             SetupEnvironment();
         }
