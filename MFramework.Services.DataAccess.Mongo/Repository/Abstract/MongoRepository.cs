@@ -29,8 +29,8 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
         Task<List<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> filter);
         TEntity Insert(TEntity entity);
         Task<TEntity> InsertAsync(TEntity entity);
-        List<TEntity> List();
-        Task<List<TEntity>> ListAsync();
+        IList<TEntity> List();
+        Task<IList<TEntity>> ListAsync();
         IMongoQueryable<TEntity> Queryable();
         long Update(TKey id, TEntity entity);
         long Update(TKey id, UpdateDefinition<TEntity> updateDefinition);
@@ -129,12 +129,12 @@ namespace MFramework.Services.DataAccess.Mongo.Repository.Abstract
             return entity;
         }
 
-        public virtual List<TEntity> List()
+        public virtual IList<TEntity> List()
         {
             return Queryable().ToList();
         }
 
-        public virtual async Task<List<TEntity>> ListAsync()
+        public virtual async Task<IList<TEntity>> ListAsync()
         {
             return await collection.AsQueryable().ToListAsync();
         }
