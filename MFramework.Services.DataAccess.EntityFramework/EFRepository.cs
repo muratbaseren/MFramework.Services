@@ -16,11 +16,50 @@ namespace MFramework.Services.DataAccess.EntityFramework
         protected readonly TContext Context;
         protected readonly DbSet<TEntity> Table;
 
-
         public EFRepository(TContext context)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
             Table = Context.Set<TEntity>();
+        }
+
+        public virtual bool Any()
+        {
+            return Table.Any();
+        }
+
+        public virtual async Task<bool> AnyAsync()
+        {
+            return await Table.AnyAsync();
+        }
+
+        public virtual bool Any(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Table.Any(predicate);
+        }
+
+        public virtual async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await Table.AnyAsync(predicate);
+        }
+
+        public virtual int Count()
+        {
+            return Table.Count();
+        }
+
+        public virtual async Task<int> CountAsync()
+        {
+            return await Table.CountAsync();
+        }
+
+        public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await Table.CountAsync(predicate);
+        }
+
+        public virtual int Count(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Table.Count(predicate);
         }
 
         public virtual TEntity Find(TKey id)
@@ -113,11 +152,6 @@ namespace MFramework.Services.DataAccess.EntityFramework
         public virtual IQueryable<TEntity> Queryable()
         {
             return Table.AsQueryable();
-        }
-
-        public virtual int Count(Func<TEntity, bool> predicate)
-        {
-            return Table.Count(predicate);
         }
 
         public virtual int Save()

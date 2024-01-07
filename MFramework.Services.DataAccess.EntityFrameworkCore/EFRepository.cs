@@ -23,6 +23,46 @@ namespace MFramework.Services.DataAccess.EntityFrameworkCore
             Table = Context.Set<TEntity>();
         }
 
+        public virtual bool Any()
+        {
+            return Table.Any();
+        }
+
+        public virtual async Task<bool> AnyAsync()
+        {
+            return await Table.AnyAsync();
+        }
+
+        public virtual bool Any(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Table.Any(predicate);
+        }
+
+        public virtual async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await Table.AnyAsync(predicate);
+        }
+
+        public virtual int Count()
+        {
+            return Table.Count();
+        }
+
+        public virtual async Task<int> CountAsync()
+        {
+            return await Table.CountAsync();
+        }
+
+        public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await Table.CountAsync(predicate);
+        }
+
+        public virtual int Count(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Table.Count(predicate);
+        }
+
         public virtual TEntity Find(TKey id)
         {
             return Table.Find(id);
