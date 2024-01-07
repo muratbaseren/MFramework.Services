@@ -3,7 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using CollectionAttribute = MFramework.Services.DataAccess.Mongo.Attributes.CollectionAttribute;
 
-namespace TestProject1.Concrete
+namespace TestProject1.MongoTests.MongoObjects
 {
     [Collection("albums")]
     public class AlbumRepository : MongoRepository<Album, ObjectId>

@@ -1,22 +1,8 @@
 ﻿using MFramework.Services.Entities.Abstract;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 
-namespace TestProject1.Concrete
+namespace TestProject1.EntityFramework
 {
-    public class Album : EntityBase<ObjectId>
-    {
-        public string Name { get; set; }
-
-        [BsonRepresentation(BsonType.Int32)]
-        public int Year { get; set; }
-        public bool IsSales { get; set; }
-
-        [BsonRepresentation(BsonType.Decimal128)]
-        public decimal Price { get; set; }
-    }
-
-    public class AlbumCreate
+    public class Song : EntityBase<int>
     {
         public string Name { get; set; }
         public int Year { get; set; }
@@ -24,7 +10,7 @@ namespace TestProject1.Concrete
         public decimal Price { get; set; }
     }
 
-    public class AlbumEdit
+    public class SongCreate
     {
         public string Name { get; set; }
         public int Year { get; set; }
@@ -32,9 +18,17 @@ namespace TestProject1.Concrete
         public decimal Price { get; set; }
     }
 
-    public class AlbumQuery
+    public class SongEdit
     {
-        public string Id { get; set; }
+        public string Name { get; set; }
+        public int Year { get; set; }
+        public bool IsSales { get; set; }
+        public decimal Price { get; set; }
+    }
+
+    public class SongQuery
+    {
+        public int Id { get; set; }
         public string Name { get; set; }
         public int Year { get; set; }
         public bool IsSales { get; set; }

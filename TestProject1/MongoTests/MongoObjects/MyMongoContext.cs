@@ -1,6 +1,6 @@
 ﻿using MFramework.Services.DataAccess.Mongo.Context;
 
-namespace TestProject1.Concrete
+namespace TestProject1.MongoTests.MongoObjects
 {
     public class MyMongoContext : MongoDBContextBase
     {

@@ -1,16 +1,16 @@
 ﻿using MongoDB.Bson;
-using TestProject1.Concrete;
+using TestProject1.MongoTests.MongoObjects;
 using Xunit.Abstractions;
 
-namespace TestProject1
+namespace TestProject1.MongoTests
 {
     [Collection("MongoCollection")]
-    public class MongoManagerTest : IClassFixture<TestFixture>
+    public class MongoManagerTest : IClassFixture<MongoTestFixture>
     {
-        private readonly TestFixture _fixture;
+        private readonly MongoTestFixture _fixture;
         private readonly ITestOutputHelper _output;
 
-        public MongoManagerTest(TestFixture fixture, ITestOutputHelper output)
+        public MongoManagerTest(MongoTestFixture fixture, ITestOutputHelper output)
         {
             _fixture = fixture;
             _output = output;

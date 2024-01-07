@@ -11,6 +11,7 @@
 
   <ItemGroup>
 	  <PackageReference Include="AutoMapper" Version="12.0.1" />
+	  <PackageReference Include="EntityFramework" Version="6.4.4" />
 	  <PackageReference Include="mframework.services.fakedata" Version="1.0.23" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.23.1" />
@@ -26,9 +27,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MFramework.Services.Business.EntityFramework\MFramework.Services.Business.EntityFramework.csproj" />
     <ProjectReference Include="..\MFramework.Services.Business.Mongo\MFramework.Services.Business.Mongo.csproj" />
     <ProjectReference Include="..\MFramework.Services.Business\MFramework.Services.Business.csproj" />
     <ProjectReference Include="..\MFramework.Services.Common\MFramework.Services.Common.csproj" />
+    <ProjectReference Include="..\MFramework.Services.DataAccess.EntityFramework\MFramework.Services.DataAccess.EntityFramework.csproj" />
     <ProjectReference Include="..\MFramework.Services.DataAccess.Mongo\MFramework.Services.DataAccess.Mongo.csproj" />
     <ProjectReference Include="..\MFramework.Services.DataAccess\MFramework.Services.DataAccess.csproj" />
     <ProjectReference Include="..\MFramework.Services.Entities\MFramework.Services.Entities.csproj" />
