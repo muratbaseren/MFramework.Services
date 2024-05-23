@@ -1,29 +1,28 @@
 ﻿using AutoMapper;
 using MFramework.Services.Business.EntityFramework.Abstract;
-using MFramework.Services.Common.Extensions;
 using MFramework.Services.DataAccess.UnitOfWork;
 using MFramework.Services.Entities.Abstract;
 using System.Threading.Tasks;
 
 namespace MFramework.Services.Business.EntityFramework
 {
-    public partial class EFManagerWithUnitOfWork<TEntity, TKey, TRepository, TUnitOfWork> :
+    public partial class EFManagerWithUnitOfWorkGeneric<TEntity, TKey, TRepository, TUnitOfWork> :
         EFManager<TEntity, TKey, TRepository>,
         IEFManager<TEntity, TKey>
         where TEntity : EntityBase<TKey>
         where TRepository : class
-        where TUnitOfWork : IUnitOfWork
+        where TUnitOfWork : IUnitOfWorkGeneric
     {
         protected readonly TUnitOfWork unitOfWork;
 
-        public EFManagerWithUnitOfWork(TUnitOfWork uow) :
-            base(uow.GetType().GetProperty<TRepository>().GetValue(uow) as TRepository)
+        public EFManagerWithUnitOfWorkGeneric(TUnitOfWork uow) :
+            base(uow.GetRepository<TRepository>())
         {
             unitOfWork = uow;
         }
 
-        public EFManagerWithUnitOfWork(TUnitOfWork uow, IMapper mapper) :
-            base(uow.GetType().GetProperty<TRepository>().GetValue(uow) as TRepository, mapper)
+        public EFManagerWithUnitOfWorkGeneric(TUnitOfWork uow, IMapper mapper) :
+            base(uow.GetRepository<TRepository>(), mapper)
         {
         }
 
