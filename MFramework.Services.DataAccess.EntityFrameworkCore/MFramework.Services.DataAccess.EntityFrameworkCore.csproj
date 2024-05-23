@@ -9,7 +9,7 @@
     <PackageProjectUrl>https://github.com/muratbaseren/MFramework.Services</PackageProjectUrl>
     <RepositoryUrl>https://github.com/muratbaseren/MFramework.Services</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>3.7.0</Version>
+    <Version>3.8.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
