@@ -25,6 +25,7 @@ namespace MFramework.Services.Business.EntityFramework
         public EFManagerWithUnitOfWork(TUnitOfWork uow, IMapper mapper) :
             base(uow.GetType().GetProperty<TRepository>().GetValue(uow) as TRepository, mapper)
         {
+            unitOfWork = uow;
         }
 
         public new virtual int Save()
