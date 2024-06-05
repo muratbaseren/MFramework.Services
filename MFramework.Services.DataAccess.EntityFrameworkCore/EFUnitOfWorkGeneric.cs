@@ -1,5 +1,6 @@
 ﻿using MFramework.Services.DataAccess.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 
@@ -21,8 +22,9 @@ namespace MFramework.Services.DataAccess.EntityFrameworkCore
         {
             if (_repositories.ContainsKey(typeof(TRepository)) == false)
             {
-                TRepository repository = (TRepository)Activator.CreateInstance(typeof(TRepository), base._context);
-
+                var repositoryInst = _serviceProvider.GetRequiredService<TRepository>();
+                TRepository repository = (TRepository)Activator.CreateInstance(repositoryInst.GetType(), base._context);
+                
                 _repositories.Add(typeof(TRepository), repository);
             }
 
