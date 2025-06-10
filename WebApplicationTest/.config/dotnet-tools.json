@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "mfs-cli": {
+      "version": "1.0.6",
+      "commands": [
+        "mfs"
+      ],
+      "rollForward": false
+    }
+  }
+}
