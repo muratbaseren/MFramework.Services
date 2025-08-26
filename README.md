@@ -1,343 +1,556 @@
 # MFramework.Services
-Includes all MFramework services infrastructure projects
 
-## Basic Sample Instruction
-We are creating sample entity, context, repository and manager classes.
+![License](https://img.shields.io/github/license/muratbaseren/MFramework.Services)
+![Version](https://img.shields.io/badge/version-v3.8.0-blue)
 
+**MFramework.Services**, .NET tabanlı modern uygulamalar için kapsamlı bir mikroservis altyapı framework'üdür. MongoDB, Entity Framework ve Entity Framework Core desteği sunar ve enterprise düzeyinde yazılım geliştirme için gerekli tüm temel bileşenleri içerir.
+
+## 🎯 Proje Tanımı
+
+Bu framework, mikroservis mimarileri ve modern .NET uygulamaları için tasarlanmış, Repository Pattern, Unit of Work Pattern ve Dependency Injection gibi modern yazılım geliştirme pratiklerini destekleyen kapsamlı bir altyapı çözümüdür.
+
+## ✨ Özellikler
+
+- **🗄️ Çoklu Veritabanı Desteği**: MongoDB, Entity Framework ve Entity Framework Core
+- **🏗️ Repository Pattern**: Veri erişim katmanı için standart repository deseni
+- **💼 Manager Pattern**: İş mantığı katmanı için manager deseni
+- **🔄 Unit of Work Pattern**: Transaction yönetimi ve veri tutarlılığı
+- **🗺️ AutoMapper Entegrasyonu**: Nesne eşleme işlemleri
+- **⚡ Async/Await Desteği**: Modern asenkron programlama
+- **🧩 Generic Base Classes**: Tekrar kullanılabilir temel sınıflar
+- **🔧 Extension Methods**: Kullanışlı genişletme metodları
+- **📧 Email Servisi**: SMTP tabanlı email gönderimi
+- **🌐 Web Common**: Web uygulamaları için ortak bileşenler
+- **🧪 Unit Test Desteği**: xUnit ile test altyapısı
+
+## 📦 Paketler
+
+Framework aşağıdaki ana bileşenlerden oluşur:
+
+| Paket | Açıklama | Versiyon |
+|-------|----------|----------|
+| `MFramework.Services.Common` | Ortak araçlar ve extension'lar | ![NuGet](https://img.shields.io/nuget/v/MFramework.Services.Common) |
+| `MFramework.Services.Entities` | Temel entity sınıfları | ![NuGet](https://img.shields.io/nuget/v/MFramework.Services.Entities) |
+| `MFramework.Services.DataAccess` | Veri erişim soyutlamaları | ![NuGet](https://img.shields.io/nuget/v/MFramework.Services.DataAccess) |
+| `MFramework.Services.DataAccess.Mongo` | MongoDB implementasyonu | ![NuGet](https://img.shields.io/nuget/v/MFramework.Services.DataAccess.Mongo) |
+| `MFramework.Services.DataAccess.EntityFramework` | Entity Framework implementasyonu | ![NuGet](https://img.shields.io/nuget/v/MFramework.Services.DataAccess.EntityFramework) |
+| `MFramework.Services.DataAccess.EntityFrameworkCore` | Entity Framework Core implementasyonu | ![NuGet](https://img.shields.io/nuget/v/MFramework.Services.DataAccess.EntityFrameworkCore) |
+| `MFramework.Services.Business` | İş mantığı soyutlamaları | ![NuGet](https://img.shields.io/nuget/v/MFramework.Services.Business) |
+| `MFramework.Services.Business.Mongo` | MongoDB iş mantığı implementasyonu | ![NuGet](https://img.shields.io/nuget/v/MFramework.Services.Business.Mongo) |
+| `MFramework.Services.Business.EntityFramework` | Entity Framework iş mantığı implementasyonu | ![NuGet](https://img.shields.io/nuget/v/MFramework.Services.Business.EntityFramework) |
+| `MFramework.Services.WebCommon` | Web uygulamaları için ortak bileşenler | ![NuGet](https://img.shields.io/nuget/v/MFramework.Services.WebCommon) |
+
+## 🛠️ Kurulum
+
+### MongoDB için Kurulum
+
+```bash
+# Package Manager Console
+Install-Package MFramework.Services.Business.Mongo
+Install-Package MFramework.Services.DataAccess.Mongo
+Install-Package MFramework.Services.Common
+Install-Package MFramework.Services.Entities
+Install-Package AutoMapper
+Install-Package MongoDB.Driver
+
+# .NET CLI
+dotnet add package MFramework.Services.Business.Mongo
+dotnet add package MFramework.Services.DataAccess.Mongo
+dotnet add package MFramework.Services.Common
+dotnet add package MFramework.Services.Entities
+dotnet add package AutoMapper
+dotnet add package MongoDB.Driver
+```
+
+### Entity Framework için Kurulum
+
+```bash
+# Package Manager Console
+Install-Package MFramework.Services.Business.EntityFramework
+Install-Package MFramework.Services.DataAccess.EntityFramework
+Install-Package MFramework.Services.Common
+Install-Package MFramework.Services.Entities
+Install-Package AutoMapper
+Install-Package EntityFramework
+
+# .NET CLI
+dotnet add package MFramework.Services.Business.EntityFramework
+dotnet add package MFramework.Services.DataAccess.EntityFramework
+dotnet add package MFramework.Services.Common
+dotnet add package MFramework.Services.Entities
+dotnet add package AutoMapper
+dotnet add package EntityFramework
+```
+
+### Entity Framework Core için Kurulum
+
+```bash
+# Package Manager Console
+Install-Package MFramework.Services.Business.EntityFrameworkCore
+Install-Package MFramework.Services.DataAccess.EntityFrameworkCore
+Install-Package MFramework.Services.Common
+Install-Package MFramework.Services.Entities
+Install-Package AutoMapper
+Install-Package Microsoft.EntityFrameworkCore
+Install-Package Microsoft.EntityFrameworkCore.SqlServer
+
+# .NET CLI
+dotnet add package MFramework.Services.Business.EntityFrameworkCore
+dotnet add package MFramework.Services.DataAccess.EntityFrameworkCore
+dotnet add package MFramework.Services.Common
+dotnet add package MFramework.Services.Entities
+dotnet add package AutoMapper
+dotnet add package Microsoft.EntityFrameworkCore
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+```
+
+## 💻 Kullanım
+
+### MongoDB ile CRUD İşlemleri
+
+#### 1. Entity Tanımlama
 
 ```csharp
-using AutoMapper;
-using MFramework.Services.Business.Mongo;
-using MFramework.Services.Common.Extensions;
-using MFramework.Services.DataAccess.Mongo.Attributes;
-using MFramework.Services.DataAccess.Mongo.Context;
-using MFramework.Services.DataAccess.Mongo.Repository.Abstract;
 using MFramework.Services.Entities.Abstract;
-using MFramework.Services.FakeData;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Driver;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+
+public class Album : EntityBase<ObjectId>
+{
+    public string Name { get; set; }
+
+    [BsonRepresentation(BsonType.Int32)]
+    public int Year { get; set; }
+    
+    public bool IsSales { get; set; }
+
+    [BsonRepresentation(BsonType.Decimal128)]
+    public decimal Price { get; set; }
+}
+```
+
+#### 2. Context Tanımlama
+
+```csharp
+using MFramework.Services.DataAccess.Mongo.Context;
+
+public class MyMongoContext : MongoDBContextBase
+{
+    public MyMongoContext(IConfiguration configuration) 
+        : base(null, configuration.GetConnectionString("MongoDB"), "albumdb")
+    {
+    }
+}
+```
+
+#### 3. Repository Tanımlama
+
+```csharp
+using MFramework.Services.DataAccess.Mongo.Attributes;
+using MFramework.Services.DataAccess.Mongo.Repository.Abstract;
+
+[Collection("albums")]
+public class AlbumRepository : MongoRepository<Album, ObjectId>
+{
+    public AlbumRepository(MyMongoContext context) : base(context)
+    {
+    }
+}
+```
+
+#### 4. Manager Tanımlama
+
+```csharp
+using MFramework.Services.Business.Mongo;
+using AutoMapper;
 using System.Linq.Expressions;
 
-namespace SampleConsoleApp
+public class AlbumManager : MongoManager<Album, ObjectId, AlbumRepository>
 {
-    public class MyMongoContext : MongoDBContextBase
+    public AlbumManager(AlbumRepository repository, IMapper mapper) 
+        : base(repository, mapper)
     {
-        public MyMongoContext() : base(null, "mongodb://localhost:27017", "mongotestdb")
-        {
-
-        }
     }
 
-    public class Album : EntityBase<ObjectId>
+    public Album FindByName(string name)
     {
-        public string Name { get; set; }
-
-        [BsonRepresentation(BsonType.Int32)]
-        public int Year { get; set; }
-        public bool IsSales { get; set; }
-
-        [BsonRepresentation(BsonType.Decimal128)]
-        public decimal Price { get; set; }
+        return repository.Find(x => x.Name == name);
     }
 
-    [Collection("albums")]
-    public class AlbumRepository : MongoRepository<Album, ObjectId>
+    public async Task<IEnumerable<Album>> GetAlbumsByYearAsync(int year)
     {
-        public AlbumRepository() : base(new MyMongoContext())
-        {
-        }
+        return await repository.FindAllAsync(x => x.Year == year);
+    }
+}
+```
+
+### Entity Framework Core ile CRUD İşlemleri
+
+#### 1. Entity Tanımlama
+
+```csharp
+using MFramework.Services.Entities.Abstract;
+using System.ComponentModel.DataAnnotations;
+
+public class Book : EntityBase<int>
+{
+    [Required]
+    [MaxLength(200)]
+    public string Title { get; set; }
+    
+    [Required]
+    [MaxLength(100)]
+    public string Author { get; set; }
+    
+    public DateTime PublishedDate { get; set; }
+    
+    public decimal Price { get; set; }
+}
+```
+
+#### 2. DbContext Tanımlama
+
+```csharp
+using Microsoft.EntityFrameworkCore;
+
+public class BookContext : DbContext
+{
+    public BookContext(DbContextOptions<BookContext> options) : base(options)
+    {
     }
 
-    public class AlbumManager : MongoManager<Album, ObjectId, AlbumRepository>
+    public DbSet<Book> Books { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        public AlbumManager(IMapper mapper) : base(new AlbumRepository(), mapper)
+        modelBuilder.Entity<Book>(entity =>
         {
-        }
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Title).IsRequired().HasMaxLength(200);
+            entity.Property(e => e.Author).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Price).HasColumnType("decimal(18,2)");
+        });
+    }
+}
+```
 
-        public Album Find(Expression<Func<Album, bool>> filter)
-        {
-            return repository.Find(filter);
-        }
+#### 3. Repository Tanımlama
 
-        public IEnumerable<Album> FindAll(Expression<Func<Album, bool>> filter)
+```csharp
+using MFramework.Services.DataAccess.EntityFrameworkCore;
+
+public class BookRepository : EFRepository<Book, int, BookContext>
+{
+    public BookRepository(BookContext context) : base(context)
+    {
+    }
+}
+```
+
+#### 4. Manager Tanımlama
+
+```csharp
+using MFramework.Services.Business.EntityFramework;
+using AutoMapper;
+
+public class BookManager : EFManager<Book, int, BookRepository>
+{
+    public BookManager(BookRepository repository, IMapper mapper) 
+        : base(repository, mapper)
+    {
+    }
+
+    public async Task<IEnumerable<Book>> GetBooksByAuthorAsync(string author)
+    {
+        return await repository.FindAllAsync(x => x.Author == author);
+    }
+}
+```
+
+### Unit of Work Pattern Kullanımı
+
+```csharp
+using MFramework.Services.DataAccess.UnitOfWork;
+using MFramework.Services.DataAccess.EntityFrameworkCore;
+
+public interface IMyUnitOfWork : IUnitOfWork
+{
+    IRepository<Book, int> BookRepository { get; }
+    IRepository<Album, ObjectId> AlbumRepository { get; }
+}
+
+public class MyUnitOfWork : EFUnitOfWork<BookContext>, IMyUnitOfWork
+{
+    public MyUnitOfWork(BookContext context) : base(context)
+    {
+    }
+
+    private IRepository<Book, int> _bookRepository;
+    public IRepository<Book, int> BookRepository
+    {
+        get
         {
-            return repository.FindAll(filter);
+            return _bookRepository ??= new BookRepository(_context);
         }
     }
 }
 ```
 
-## Basic Usage
-Sample CRUD Console App for testing with information.
+### Web API Controller Örneği
 
 ```csharp
-using AutoMapper;
-using MFramework.Services.Business.Mongo;
-using MFramework.Services.Common.Extensions;
-using MFramework.Services.DataAccess.Mongo.Attributes;
-using MFramework.Services.DataAccess.Mongo.Context;
-using MFramework.Services.DataAccess.Mongo.Repository.Abstract;
-using MFramework.Services.Entities.Abstract;
-using MFramework.Services.FakeData;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Driver;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-namespace SampleConsoleApp
+[ApiController]
+[Route("api/[controller]")]
+public class BooksController : ControllerBase
 {
+    private readonly BookManager _bookManager;
+    private readonly IMyUnitOfWork _unitOfWork;
 
-    class Program
+    public BooksController(BookManager bookManager, IMyUnitOfWork unitOfWork)
     {
-        private static ObjectId newAddedObjId = ObjectId.Empty;
-        static void Main(string[] args)
-        {
-            MapperConfiguration mapperConfiguration =
-                new MapperConfiguration(opts => opts.CreateMap<Album, Album>());
-
-            IMapper mapper = mapperConfiguration.CreateMapper();
-
-            AlbumManager albumManager = new AlbumManager(mapper);
-            CreateFakeData(albumManager);
-            QueryTest(albumManager);
-
-            CreateTest(albumManager);
-            QueryTest(albumManager);
-            FindTest(albumManager);
-
-            UpdateTest(albumManager);
-            QueryTest(albumManager);
-
-            DeleteTest(albumManager);
-            QueryTest(albumManager);
-
-            Console.WriteLine();
-            Console.WriteLine("Please enter to quit!!..");
-            Console.ReadKey();
-        }
-
-
-
-        private static void CreateTest(AlbumManager albumManager)
-        {
-            WriteTitle("CREATE TEST");
-
-            var album = albumManager.Create(new Album { IsSales = false, Name = "testo11", Price = 10, Year = 2021 });
-            newAddedObjId = album.Id;
-            Console.WriteLine(album.ToJson());
-
-            LastStatement("Album created. ");
-        }
-
-        private static void CreateFakeData(AlbumManager albumManager)
-        {
-            "Checking fake data exists...".ToConsoleWithNewLine();
-            if (albumManager.Query().Any())
-            {
-                "Fake data has already exist..".ToConsoleWithNewLine();
-            }
-            else
-            {
-                WriteTitle("ADDING FAKE DATA");
-
-                // Create fake static datas..
-                //
-                Album album1 = new Album
-                {
-                    Name = "Thompson LLP",
-                    Year = 1983,
-                    IsSales = true,
-                    Price = 2991.897623784793302m
-                };
-                albumManager.Create(album1).ToJson().ToConsoleLine();
-
-                Album album2 = new Album
-                {
-                    Name = "Lord and Partners",
-                    Year = 2008,
-                    IsSales = true,
-                    Price = 80.5049157852795798m
-                };
-                albumManager.Create(album2).ToJson().ToConsoleLine();
-
-                Album album3 = new Album
-                {
-                    Name = "Summers CIC",
-                    Year = 1981,
-                    IsSales = false,
-                    Price = 50.2335336088358382m
-                };
-                albumManager.Create(album3).ToJson().ToConsoleLine();
-
-                Album album4 = new Album
-                {
-                    Name = "Weaver Group",
-                    Year = 2013,
-                    IsSales = true,
-                    Price = 316.240591920093264m
-                };
-                albumManager.Create(album4).ToJson().ToConsoleLine();
-
-                Album album5 = new Album
-                {
-                    Name = "Joyce Inc",
-                    Year = 2013,
-                    IsSales = false,
-                    Price = 790.903162565502480m
-                };
-                albumManager.Create(album5).ToJson().ToConsoleLine();
-
-
-
-                // Create fake dynamic datas..
-                //
-                //for (int i = 0; i < 5; i++)
-                //{
-                //    albumManager.Create(new Album
-                //    {
-                //        Name = NameData.GetCompanyName(),
-                //        Price = (decimal)NumberData.GetDouble() * NumberData.GetNumber(100, 4000),
-                //        IsSales = BooleanData.GetBoolean(),
-                //        Year = NumberData.GetNumber(1980, DateTime.Now.Year)
-                //    }).ToJson().ToConsoleLine();
-                //}
-
-                LastStatement("Fake data created. ");
-            }
-        }
-
-        private static void QueryTest(AlbumManager albumManager)
-        {
-            WriteTitle("LIST TEST");
-
-            WriteSubTitle("List 1 All Items");
-            var list = albumManager.List().ToList();
-            list.ForEach(x => x.ToJson().ToConsoleLine());
-            Console.WriteLine();
-
-            WriteSubTitle("List 2 (only IsSale=true)");
-            var list2 = albumManager.Query().Where(x => x.IsSales).ToList();
-            list2.ForEach(x => x.ToJson().ToConsoleLine());
-            Console.WriteLine();
-
-            WriteSubTitle("List 3 (only Name.StartsWith('T'))");
-            var list3 = albumManager.Query().Where(x => x.Name.StartsWith("T")).ToList();
-            list3.ForEach(x => x.ToJson().ToConsoleLine());
-            Console.WriteLine();
-
-            WriteSubTitle("List 4 (only Price >= 50 && x.Price <= 100)");
-            var list4 = albumManager.Query().Where(x => x.Price >= 50 && x.Price <= 100).ToList();
-            list4.ForEach(x => x.ToJson().ToConsoleLine());
-            Console.WriteLine();
-
-            LastStatement(null);
-        }
-
-        private static void FindTest(AlbumManager albumManager)
-        {
-            WriteTitle("FIND TEST");
-
-            WriteSubTitle($"Find (only id:{newAddedObjId})");
-            var item1 = albumManager.Find(newAddedObjId);
-            item1.ToJson().ToConsoleWithNewLine();
-
-            WriteSubTitle($"Find (Price = 10)");
-            var item2 = albumManager.Find(x => x.Price == 10);
-            item2.ToJson().ToConsoleWithNewLine();
-
-            WriteSubTitle($"Find All (Year > 1980 && Year < 1984)");
-            var list = albumManager.FindAll(x => x.Year > 1980 && x.Year < 1984).ToList();
-            list.ForEach(x => x.ToJson().ToConsoleLine());
-            Console.WriteLine();
-
-            LastStatement(null);
-        }
-
-        private static void UpdateTest(AlbumManager albumManager)
-        {
-            WriteTitle("UPDATE TESTS");
-
-            var album2 = albumManager.Find(newAddedObjId);
-            album2.Name = "testo112";
-            albumManager.Update(album2.Id, album2);
-            var album3 = albumManager.Find(album2.Id);
-            album3.ToJson().ToConsoleLine();
-            $"Album name updated with \"Update\" method. Please enter key to continue..".ToConsoleWithNewLine();
-
-            var album4 = albumManager.Find(newAddedObjId);
-            albumManager.UpdateProperties(album4.Id, new { Name = "testo113" }.ToExpando());
-            var album5 = albumManager.Find(album4.Id);
-            album5.ToJson().ToConsoleLine();
-            $"Album name updated by \"UpdateProperties\" method. ".ToConsoleWithNewLine();
-
-            LastStatement(null);
-        }
-
-        private static void DeleteTest(AlbumManager albumManager)
-        {
-            WriteTitle("DELETE TEST");
-
-            albumManager.Delete(newAddedObjId);
-
-            LastStatement($"Album deleted.(id : {newAddedObjId})");
-        }
-
-
-
-        private static void LastStatement(string message)
-        {
-            Console.WriteLine();
-            if (!string.IsNullOrEmpty(message))
-            {
-                Console.WriteLine(message);
-            }
-            Console.WriteLine("Please enter key to continue..");
-            Console.ReadKey();
-            Console.WriteLine();
-        }
-
-        private static void WriteTitle(string title)
-        {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(title);
-            Console.WriteLine("=".PadRight(title.Length, '='));
-            Console.WriteLine();
-            Console.ResetColor();
-        }
-
-        private static void WriteSubTitle(string subtitle)
-        {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine(subtitle);
-            Console.WriteLine("=".PadRight(subtitle.Length, '='));
-            Console.ResetColor();
-        }
+        _bookManager = bookManager;
+        _unitOfWork = unitOfWork;
     }
 
-    public static class StringExtensions
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
     {
-        public static void ToConsoleLine(this string str)
-        {
-            Console.WriteLine(str);
-        }
+        var books = await _bookManager.GetAllAsync();
+        return Ok(books);
+    }
 
-        public static void ToConsoleWithNewLine(this string str)
-        {
-            Console.WriteLine(str);
-            Console.WriteLine();
-        }
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Book>> GetBook(int id)
+    {
+        var book = await _bookManager.GetByIdAsync(id);
+        if (book == null)
+            return NotFound();
+        
+        return Ok(book);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Book>> CreateBook(Book book)
+    {
+        var createdBook = await _bookManager.CreateAsync(book);
+        await _unitOfWork.CommitAsync();
+        
+        return CreatedAtAction(nameof(GetBook), new { id = createdBook.Id }, createdBook);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateBook(int id, Book book)
+    {
+        if (id != book.Id)
+            return BadRequest();
+
+        await _bookManager.UpdateAsync(book);
+        await _unitOfWork.CommitAsync();
+        
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteBook(int id)
+    {
+        await _bookManager.DeleteAsync(id);
+        await _unitOfWork.CommitAsync();
+        
+        return NoContent();
     }
 }
 ```
 
-Sample net core console app
-https://github.com/muratbaseren/MFramework.Services/tree/master/SampleConsoleApp
+## ⚙️ AppSettings.json Konfigürasyonu
+
+### MongoDB için
+
+```json
+{
+  "ConnectionStrings": {
+    "MongoDB": "mongodb://localhost:27017"
+  },
+  "EmailSettings": {
+    "MailHost": "smtp.gmail.com",
+    "MailPort": 587,
+    "MailUsername": "your-email@gmail.com",
+    "MailPassword": "your-app-password",
+    "MailDisplayName": "My Application",
+    "MailEnableSsl": true,
+    "MailIsBodyHtml": true,
+    "MailUseDefaultCredentials": false
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  }
+}
+```
+
+### SQL Server (Entity Framework Core) için
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=MyAppDb;Trusted_Connection=true;MultipleActiveResultSets=true",
+    "MongoDB": "mongodb://localhost:27017"
+  },
+  "EmailSettings": {
+    "MailHost": "smtp.gmail.com",
+    "MailPort": 587,
+    "MailUsername": "your-email@gmail.com",
+    "MailPassword": "your-app-password",
+    "MailDisplayName": "My Application",
+    "MailEnableSsl": true,
+    "MailIsBodyHtml": true,
+    "MailUseDefaultCredentials": false
+  },
+  "FileSettings": {
+    "UploadPath": "uploads",
+    "MaxFileSize": 10485760,
+    "AllowedExtensions": [".jpg", ".jpeg", ".png", ".pdf", ".docx"]
+  }
+}
+```
+
+## 🔧 Dependency Injection Ayarları
+
+### Program.cs (.NET 6+)
+
+```csharp
+using MFramework.Services.Common;
+using MFramework.Services.WebCommon;
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// DbContext konfigürasyonu (Entity Framework Core)
+builder.Services.AddDbContext<BookContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// MongoDB Context konfigürasyonu
+builder.Services.AddScoped<MyMongoContext>();
+
+// AutoMapper konfigürasyonu
+builder.Services.AddAutoMapper(typeof(Program));
+
+// Repository'ler
+builder.Services.AddScoped<BookRepository>();
+builder.Services.AddScoped<AlbumRepository>();
+
+// Manager'lar
+builder.Services.AddScoped<BookManager>();
+builder.Services.AddScoped<AlbumManager>();
+
+// Unit of Work
+builder.Services.AddScoped<IMyUnitOfWork, MyUnitOfWork>();
+
+// Email servisi
+builder.Services.Configure<EMailSenderSettings>(
+    builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddScoped<IEMailSender, EMailSender>();
+
+// File manager
+builder.Services.AddScoped<IFileFolderManager, FileFolderManager>();
+
+// Web API servisleri
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+// Pipeline konfigürasyonu
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
+
+app.Run();
+```
+
+### AutoMapper Profil Örneği
+
+```csharp
+using AutoMapper;
+
+public class MappingProfile : Profile
+{
+    public MappingProfile()
+    {
+        // Book mappings
+        CreateMap<Book, BookDto>().ReverseMap();
+        CreateMap<Book, CreateBookDto>().ReverseMap();
+        CreateMap<Book, UpdateBookDto>().ReverseMap();
+        
+        // Album mappings
+        CreateMap<Album, AlbumDto>().ReverseMap();
+        CreateMap<Album, CreateAlbumDto>().ReverseMap();
+        CreateMap<Album, UpdateAlbumDto>().ReverseMap();
+    }
+}
+```
+
+## 📋 Gereksinimler
+
+- **.NET Standard 2.1** veya üzeri
+- **MongoDB 4.0+** (MongoDB kullanımı için)
+- **SQL Server 2016+** (Entity Framework kullanımı için)
+- **Entity Framework Core 7.0+** (EF Core kullanımı için)
+- **AutoMapper 12.0+**
+- **C# 8.0+** özellikleri
+
+### Desteklenen .NET Versiyonları
+
+- .NET Core 3.1+
+- .NET 5.0+
+- .NET 6.0+
+- .NET 7.0+
+- .NET 8.0+
+
+## 📄 Lisans
+
+Bu proje **Apache License 2.0** altında lisanslanmıştır. Detaylar için [LICENSE](https://github.com/muratbaseren/MFramework.Services/blob/master/LICENSE) dosyasına bakınız.
+
+## 🤝 Katkıda Bulunma
+
+Katkılarınızı memnuniyetle karşılıyoruz! Katkıda bulunmak için:
+
+1. Bu repository'yi fork edin
+2. Feature branch'i oluşturun (`git checkout -b feature/amazing-feature`)
+3. Değişikliklerinizi commit edin (`git commit -m 'feat: Add amazing feature'`)
+4. Branch'inizi push edin (`git push origin feature/amazing-feature`)
+5. Pull Request oluşturun
+
+### Katkı Kuralları
+
+- Kod standartlarına uyun
+- Unit testler yazın
+- Commit mesajlarında [Conventional Commits](https://www.conventionalcommits.org/) formatını kullanın
+- Değişikliklerinizi dokümante edin
+
+## 📞 İletişim
+
+- **GitHub**: [@muratbaseren](https://github.com/muratbaseren)
+- **Proje**: [MFramework.Services](https://github.com/muratbaseren/MFramework.Services)
+- **Issues**: [GitHub Issues](https://github.com/muratbaseren/MFramework.Services/issues)
+
+## 🎯 Yol Haritası
+
+- [ ] .NET 8 minimal API desteği
+- [ ] GraphQL entegrasyonu
+- [ ] Redis cache desteği
+- [ ] Message queue entegrasyonu
+- [ ] Docker container desteği
+
+---
+
+**⭐ Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!**
